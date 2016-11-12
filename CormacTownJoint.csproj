@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug-Windows</Configuration>
+    <ProjectGuid>{A9DCAC72-BC77-4C33-BE70-BBFD31D7C798}</ProjectGuid>
+    <RootNamespace>MyGame</RootNamespace>
+    <MonoMacResourcePrefix>Resources</MonoMacResourcePrefix>
+    <AssemblyName>MyGame</AssemblyName>
+    <SuppressXamMacUpsell>True</SuppressXamMacUpsell>
+    <SuppressXamMacMigration>True</SuppressXamMacMigration>
+    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <OutputType>Exe</OutputType>
+    <ApplicationIcon>Resources\SwinGame.ico</ApplicationIcon>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug-Windows|x86' ">
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug</OutputPath>
+    <WarningLevel>4</WarningLevel>
+    <PlatformTarget>x86</PlatformTarget>
+    <EnableCodeSigning>false</EnableCodeSigning>
+    <CreatePackage>false</CreatePackage>
+    <EnablePackageSigning>false</EnablePackageSigning>
+    <IncludeMonoRuntime>false</IncludeMonoRuntime>
+    <UseSGen>false</UseSGen>
+    <UseRefCounting>false</UseRefCounting>
+    <Profiling>false</Profiling>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <OutputType>WinExe</OutputType>
+  </PropertyGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PrepareForRunDependsOn>$(PrepareForRunDependsOn);CopyLibsToOut</PrepareForRunDependsOn>
+  </PropertyGroup>
+  <ItemGroup>
+    <Folder Include="src\" />
+    <Folder Include="Resources\" />
+    <Folder Include="UI\" />
+    <Folder Include="Controller\" />
+    <Folder Include="Entities\" />
+    <Folder Include="GameUI\" />
+    <Folder Include="GeneticClasses\" />
+    <Folder Include="Tests\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="UI\CormacTownButton.cs" />
+    <Compile Include="UI\CormacTownForm.cs" />
+    <Compile Include="UI\GetUserData.cs" />
+    <Compile Include="UI\LoadTimer.cs" />
+    <Compile Include="UI\OpeningPage.cs" />
+    <Compile Include="UI\Program.cs" />
+    <Compile Include="UI\SelectionPage.cs" />
+    <Compile Include="UI\PageType.cs" />
+    <Compile Include="Controller\Move.cs" />
+    <Compile Include="Controller\UpdateGame.cs" />
+    <Compile Include="Entities\Circle.cs" />
+    <Compile Include="Entities\GameEntity.cs" />
+    <Compile Include="Entities\IGameObject.cs" />
+    <Compile Include="Entities\Smiley.cs" />
+    <Compile Include="Entities\Square.cs" />
+    <Compile Include="Entities\Triangle.cs" />
+    <Compile Include="GameUI\LabelEvent.cs" />
+    <Compile Include="GameUI\ShowInfoBox.cs" />
+    <Compile Include="GameUI\TextLabel.cs" />
+    <Compile Include="GeneticClasses\Attractiveness.cs" />
+    <Compile Include="GeneticClasses\ColorGene.cs" />
+    <Compile Include="GeneticClasses\GeneEnum.cs" />
+    <Compile Include="GeneticClasses\GeneList.cs" />
+    <Compile Include="GeneticClasses\IAmGene.cs" />
+    <Compile Include="GeneticClasses\PhysicalStrength.cs" />
+    <Compile Include="Tests\TestNewGene.cs" />
+    <Compile Include="src\Collision.cs" />
+    <Compile Include="src\EntityEnvironment.cs" />
+    <Compile Include="src\GenerateRandomMovement.cs" />
+    <Compile Include="src\MateTimer.cs" />
+    <Compile Include="src\Statistics.cs" />
+    <Compile Include="src\EntityMain.cs" />
+    <Compile Include="GameUI\InGameLabel.cs" />
+    <Compile Include="UI\GameData.cs" />
+    <Compile Include="src\UnpackUserData.cs" />
+    <Compile Include="Entities\Animation.cs" />
+    <Compile Include="UI\LoadingTask.cs" />
+    <Compile Include="src\PrepareData.cs" />
+    <Compile Include="GameUI\UIButtonFlags.cs" />
+    <Compile Include="src\StatsStruct.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="SwinGame">
+      <HintPath>lib\SwinGame.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="nunit.framework">
+      <HintPath>packages\NUnit.3.5.0\lib\net45\nunit.framework.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\**\*.*">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <WinLibs Include="lib\win32\*.dll" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <Target Name="CopyLibsToOut">
+    <Copy SourceFiles="@(WinLibs)" DestinationFolder="$(OutDir)" />
+  </Target>
+</Project>

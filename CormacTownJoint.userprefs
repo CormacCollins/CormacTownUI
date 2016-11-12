@@ -1,0 +1,31 @@
+﻿<Properties>
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug-Windows|x86" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="UI\SelectionPage.cs">
+    <Files>
+      <File FileName="UI\SelectionPage.cs" Line="347" Column="6" />
+      <File FileName="UI\LoadingTask.cs" Line="17" Column="39" />
+      <File FileName="c:\Users\corma\Desktop\CormacTownJoint\src\Statistics.cs" Line="1" Column="1" />
+      <File FileName="c:\Users\corma\Desktop\CormacTownJoint\src\EntityMain.cs" Line="1" Column="1" />
+    </Files>
+    <Pads>
+      <Pad Id="ProjectPad">
+        <State expanded="True">
+          <Node name="CormacTownJoint" expanded="True">
+            <Node name="UI" expanded="True">
+              <Node name="SelectionPage.cs" selected="True" />
+            </Node>
+          </Node>
+        </State>
+      </Pad>
+      <Pad Id="MonoDevelop.NUnit.TestPad">
+        <State expanded="True" selected="True" />
+      </Pad>
+    </Pads>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore>
+      <Breakpoint file="C:\Users\corma\Desktop\CormacTownJoint\UI\LoadingTask.cs" line="20" column="1" />
+    </BreakpointStore>
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+</Properties>
