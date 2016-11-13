@@ -62,11 +62,15 @@ namespace MyGame
 		{
 			List<IGameObject> circles = new List<IGameObject> ();
 			float circlePerc = 0;
+			int circMutations = 0;
+			
 			List<IGameObject> squares = new List<IGameObject> ();
 			float squaresPerc = 0;
+			int squareMutations = 0;
+			
 			List<IGameObject> triangles = new List<IGameObject> ();
 			float trianglesPerc = 0;
-			
+			int trianglesMutations = 0;
 			
 			foreach (IGameObject g in _ents)
 			{
@@ -74,16 +78,28 @@ namespace MyGame
 				{
 					circlePerc++;
 					circles.Add (g);
+					if ((g as GameEntity).IsMutation)
+					{
+						circMutations++;
+					}
 				}
 				else if (g.GetType () == typeof(Square))
 				{
 					squaresPerc++;
 					squares.Add (g);
+					if ((g as GameEntity).IsMutation)
+					{
+						squareMutations++;
+					}					
 				}
 				else
 				{
 					trianglesPerc++;
 					triangles.Add (g);
+					if ((g as GameEntity).IsMutation)
+					{
+						trianglesMutations++;
+					}					
 				}
 			}	
 			
@@ -92,9 +108,9 @@ namespace MyGame
 			trianglesPerc = trianglesPerc/_ents.Count;
 			
 			
-			PopulateStatsStructPre(circles, circlePerc, ref _circles);
-			PopulateStatsStructPre(squares, squaresPerc, ref  _squares);
-			PopulateStatsStructPre(triangles, trianglesPerc, ref _triangles);			
+			PopulateStatsStructPre(circles, circlePerc, ref _circles, circMutations);
+			PopulateStatsStructPre(squares, squaresPerc, ref  _squares, squareMutations);
+			PopulateStatsStructPre(triangles, trianglesPerc, ref _triangles, trianglesMutations);			
 		}
 		
 		
@@ -103,10 +119,15 @@ namespace MyGame
 		{
 			List<IGameObject> circles = new List<IGameObject> ();
 			float circlePerc = 0;
+			int circMutations = 0;
+			
 			List<IGameObject> squares = new List<IGameObject> ();
 			float squaresPerc = 0;
+			int squareMutations = 0;
+			
 			List<IGameObject> triangles = new List<IGameObject> ();
 			float trianglesPerc = 0;
+			int trianglesMutations = 0;
 			
 			
 			foreach (IGameObject g in _ents)
@@ -115,35 +136,43 @@ namespace MyGame
 				{
 					circlePerc++;
 					circles.Add (g);
+					if ((g as GameEntity).IsMutation)
+					{
+						circMutations++;
+					}
 				}
 				else if (g.GetType () == typeof(Square))
 				{
 					squaresPerc++;
 					squares.Add (g);
+					if ((g as GameEntity).IsMutation)
+					{
+						squareMutations++;
+					}					
 				}
 				else
 				{
 					trianglesPerc++;
 					triangles.Add (g);
+					if ((g as GameEntity).IsMutation)
+					{
+						trianglesMutations++;
+					}					
 				}
-			}	
+			}		
 			
 
 			circlePerc = circlePerc/_ents.Count;
 			squaresPerc = squaresPerc/_ents.Count;
 			trianglesPerc = trianglesPerc/_ents.Count;
 			
-			
-			
-			
-			
-			PopulateStatsStructPost(circles, circlePerc, ref _circles);
-			PopulateStatsStructPost(squares, squaresPerc, ref _squares);
-			PopulateStatsStructPost(triangles, trianglesPerc, ref  _triangles);
+			PopulateStatsStructPost(circles, circlePerc, ref _circles, circMutations);
+			PopulateStatsStructPost(squares, squaresPerc, ref _squares, squareMutations);
+			PopulateStatsStructPost(triangles, trianglesPerc, ref  _triangles, trianglesMutations);
 			
 		}
 		
-		private void PopulateStatsStructPost (List<IGameObject> seperatedShapes, float percentage, ref StatsStruct s)
+		private void PopulateStatsStructPost (List<IGameObject> seperatedShapes, float percentage, ref StatsStruct s, int mutations)
 		{
 			if (seperatedShapes.Count () <= 0)
 			{
@@ -169,9 +198,11 @@ namespace MyGame
 			
 			s.AvgAttractivenssPost = avgAttr/seperatedShapes.Count();
 			s.AvgFitnessPost = avgFitness/seperatedShapes.Count();
+			
+			s.Mutations = mutations;
 		}
 		
-		private void PopulateStatsStructPre (List<IGameObject> seperatedShapes, float percentage, ref StatsStruct s)
+		private void PopulateStatsStructPre (List<IGameObject> seperatedShapes, float percentage, ref StatsStruct s, int mutations)
 		{
 			if (seperatedShapes.Count () <= 0)
 			{
@@ -196,6 +227,8 @@ namespace MyGame
 			
 			s.AvgAttractivenssPre = avgAttr/seperatedShapes.Count();
 			s.AvgFitnessPre = avgFitness/seperatedShapes.Count();
+			
+			s.Mutations = mutations;
 
 		}
 

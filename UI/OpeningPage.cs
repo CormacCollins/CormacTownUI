@@ -25,17 +25,18 @@ namespace MyGame
 			this.Size = new Size (800, 600);
 			this.StartPosition = FormStartPosition.CenterScreen;
 			this.FormBorderStyle = FormBorderStyle.Fixed3D;
-			this.BackColor = Color.FromArgb(123, 104, 238);
+			this.BackColor = Color.FromArgb(192, 192, 192);
 			
 			//Size up picture box
 			pictureBox1.Size = new System.Drawing.Size(300, 200);
-			pictureBox1.Location = new Point(this.Width/2 - (logoWidth/2), 70);
+			pictureBox1.Location = new Point(this.Width/2 - (logoWidth/2), 120);
 
 			
 			// ------------------ Title label --------------------------------------- //
 			CormacTownLabel titleLabel = new CormacTownLabel(24);
 			titleLabel.Text = "Cormac Town";
-			titleLabel.Location = new Point(this.Width/2 - (titleLabel.Width/3), 20);
+			titleLabel.Location = new System.Drawing.Point(this.Width/2 - (titleLabel.Width/3) - 15, 20);
+		
 			
 			
 			CormacTownButton button1 = new CormacTownButton ();
@@ -58,7 +59,8 @@ namespace MyGame
 			this.Controls.Add (button2);
 			
 			this.Controls.Add(titleLabel);
-			this.Controls.Add(pictureBox1);			
+			this.Controls.Add(pictureBox1);	
+			//this.Controls.Add(instructionLabel);
 			
 			this.ShowDialog ();
 	

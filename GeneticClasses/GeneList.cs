@@ -10,49 +10,28 @@ namespace MyGame
 		//Need to fugure out how Mutation will be implimented
 
 		private List<IAmGene> _genes = new List<IAmGene>(); 
-
-        public GeneList()
-        {
-        }
+		private bool _containsMutation;
 		
-		/// <summary>
-		/// r, g, b ints represent 256 Hex color values
-		/// </summary>
-		/// <param name="r">The red component.</param>
-		/// <param name="g">The green component.</param>
-		/// <param name="b">The blue component.</param>
+		public GeneList(bool mutated=false)
+        {
+			_containsMutation = mutated;	
+        }
 
+		public bool ContainsMutation
+		{
+			get
+			{
+				return _containsMutation;
+			}
+			set
+			{
+				_containsMutation = value;
+			}
+		}
 
 		public List<IAmGene> GetGenesList
 		{
 			get{return _genes;}
-		}
-		/// <summary>
-		/// Returns a newGene from the 2 parents - random weighting in favor of stronger gene dominance
-		/// </summary>
-		/// <returns>The over.</returns>
-		public void CrossOver (IAmGene a, IAmGene b)
-		{
-//			int geneVal = 0;
-//			var newRand = new Random ();
-//			if (a.IAmGene >= b.GeneValue) {
-//				geneVal = b.GeneValue*(newRand.Next (b.GeneValue));
-//				geneVal = geneVal + a.GeneValue;
-//				//Gene value can not be over 255 at this stage!
-//				if (geneVal >= 255) {
-//					geneVal = 255;
-//				}
-//				return geneVal;
-//			} 
-//			else { 
-//				geneVal = a.GeneValue * (newRand.Next (a.GeneValue));
-//				geneVal = geneVal + b.GeneValue;
-//				//Gene value can not be over 255 at this stage!
-//				if (geneVal >= 255) {
-//					geneVal = 255;
-//				}
-//				return geneVal;	
-//			}
 		}
 		
 		public void AddGene(IAmGene g)
@@ -82,29 +61,31 @@ namespace MyGame
 		
 		public GeneList CombineGeneLists (GeneList list)
 		{
-			GeneList newList = new GeneList();
+			GeneList newList = new GeneList ();
 			//Fix while figuring bug!
-			IAmGene newgene = list.GetGenesList[0];
-			IAmGene newgene2 = list.GetGenesList[1];
-            IAmGene newgene3 = list.GetGenesList[2];
+			IAmGene newgene = list.GetGenesList [0];
+			IAmGene newgene2 = list.GetGenesList [1];
+			IAmGene newgene3 = list.GetGenesList [2];
 
-            IAmGene currentListGene = _genes[0];
-			IAmGene currentListGene2 = _genes[1];
-            IAmGene currentListGene3 = _genes[2];
-
-            newList.AddGene(newgene.CombineGenes(currentListGene));
-			newList.AddGene(newgene2.CombineGenes(currentListGene2));
-            newList.AddGene(newgene3.CombineGenes(currentListGene3));
-
-            return newList;
+			IAmGene currentListGene = _genes [0];
+			IAmGene currentListGene2 = _genes [1];
+			IAmGene currentListGene3 = _genes [2];
 			
+			//TO be added genes
+			IAmGene n1 = newgene.CombineGenes (currentListGene);
+			IAmGene n2 = newgene2.CombineGenes (currentListGene2);
+			IAmGene n3 = newgene3.CombineGenes (currentListGene3);
+			
+			if ((n1.IsMutated) || (n2.IsMutated) || (n3.IsMutated)){
+				newList.ContainsMutation = true;
+			}
+			
+            newList.AddGene(n1);
+			newList.AddGene(n2);
+            newList.AddGene(n3);
+
+            return newList;			
 		}
-		
-		public void MutateGene (IAmGene g, IAmGene g2)
-		{
-			//Incomplete
-		}
-	
 
 
 	}

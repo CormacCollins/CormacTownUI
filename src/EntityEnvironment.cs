@@ -23,7 +23,7 @@ namespace MyGame
         private List<IGameObject> _newEntitiesToBeAdded;
         private GameEntity _selectedEntity;
 		private UIButtonFlags _gameState;
-		
+		private bool _gameOver;
 
         // --- KEEP COUNT OF TYPES -- ///
         private int _squares;
@@ -37,6 +37,7 @@ namespace MyGame
 
         public EntityEnvironment ()
 		{
+			_gameOver = false;
             _toDelete = new List<GameEntity>();
             _newEntitiesToBeAdded = new List<IGameObject>();
             
@@ -78,6 +79,7 @@ namespace MyGame
             UpdateMatingTime();                
         }
 
+		//Not Using//
         public void IsSelected(GameEntity g)
         {
             if (SwinGame.MouseClicked(MouseButton.LeftButton)){
@@ -136,38 +138,21 @@ namespace MyGame
 			{
 				GameEntity ent = (_gameEntities [i] as GameEntity);
 				ent.DecreaseLife ();
-				if ((ent.Life == 0) && (ent.AnimationStatus != Animation.death))
+				
+				if ((ent.Life <= 0) && (!ent.IsDead))
 				{
-					ent.AnimationStatus = Animation.death;
-					ent.TimeTillMate();
-					ent.SpeedX = 0;
-					ent.SpeedY = 0;
+					ent.IsDead = true;
+				 	ent.X = -500*(ent.ID + 1); //Moving them in seperate areas out of scope (so they don't mate or anything)
+		            ent.Y = -500*(ent.ID + 1);
+		            ent.SpeedX = 0;
+		            ent.SpeedY = 0;
+		            //need to get a reference to the entity to remove it outside of our render loop
+		            _toDelete.Add(ent);
 				}
-				IsAlive(ent);				               
             }
         }
 		
-		public void IsAlive (GameEntity ent)
-		{
-			if (ent.IsDead)
-                {                    
-                    if (ent != null)
-                    {
-						KillEnt(ent);
-                    }
-                } 
-		}
-		
-		public void KillEnt (GameEntity ent)
-		{
-			 //Stop and hide the shape as it may take time to go out of scope
-            ent.X = -500*(ent.ID + 1); //Moving them in seperate areas out of scope (so they don't mate or anything)
-            ent.Y = -500*(ent.ID + 1);
-            ent.SpeedX = 0;
-            ent.SpeedY = 0;
-            //need to get a reference to the entity to remove it outside of our render loop
-            _toDelete.Add(ent);
-		}
+
 
 		public List<IGameObject> GameEntities {
 			get {
@@ -217,6 +202,17 @@ namespace MyGame
             set{_selectedEntity = value;}
         }
 
+		public bool GameOver
+		{
+			get
+			{
+				return _gameOver;
+			}
+			set
+			{
+				_gameOver = value;
+			}
+		}
 
 		public List<GameEntity> ListForStats
 		{

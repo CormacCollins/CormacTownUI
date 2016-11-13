@@ -9,6 +9,7 @@ namespace MyGame
 	{
         private ShowInfoBox _gameInfo;
 		private ShowInfoBox _statsInfo;
+		private ShowInfoBox _pauseGame;
 		private bool _gameFinished;
 		private Statistics _stats;
        
@@ -21,57 +22,65 @@ namespace MyGame
 			_stats.AddPreGameStats(e.GameEntities);
 			
 			
+			// ------ PAUSE UI ------- //
+			_pauseGame = new ShowInfoBox( 0, 0, (float)SwinGame.ScreenWidth()-200, (float)SwinGame.ScreenHeight());
+            InGameLabel newLabel1 = new InGameLabel((_pauseGame.Width/2)-100, 250F, 200, 30, "Cormac Town");
+            newLabel1.ChangeTextColor(Color.DarkRed);
+            newLabel1.SetLabelColorRGBA(102, 102, 200, 255); 
+			newLabel1.Padding = 50;
+			_pauseGame.AddLabel(newLabel1);
+			
 			
             // ------ SETUP LABELS ---------- //
             // ------ Create InfoBox -------- //
             // ------ Create and add labels --//
 
             ShowInfoBox gameInformation = new ShowInfoBox((float)(SwinGame.ScreenWidth() - 200), 0, 200F, (float)SwinGame.ScreenHeight());
-            InGameLabel newLabel1 = new InGameLabel(0F, 20F, 200, 30, "Cormac Town");
+            InGameLabel pauseLabel = new InGameLabel(0F, 20F, 200, 30, "Cormac Town");
             newLabel1.ChangeTextColor(Color.DarkRed);
-            newLabel1.SetLabelColorRGBA(102, 102, 200, 50); 
-            gameInformation.AddLabel(newLabel1);
+            newLabel1.SetLabelColorRGBA(102, 102, 200, 255); 
+            gameInformation.AddLabel(pauseLabel);
 
 
             InGameLabel newLabel2 = new InGameLabel(0F, 55F, 200, 30, "Shapes alive: ");
             newLabel2.ChangeTextColor(Color.White);
-            newLabel2.SetLabelColorRGBA(220, 20, 60, 50);
+            newLabel2.SetLabelColorRGBA(220, 20, 60, 255);
             gameInformation.AddLabel(newLabel2);
 
             InGameLabel newLabel3 = new InGameLabel(0F, 85F, 200, 30, "Square Count: ");
             newLabel3.ChangeTextColor(Color.White);
-            newLabel3.SetLabelColorRGBA(220, 20, 60, 50);
+            newLabel3.SetLabelColorRGBA(220, 20, 60, 255);
             gameInformation.AddLabel(newLabel3);
 
             InGameLabel newLabel4 = new InGameLabel(0F, 115F, 200, 30, "Circle Count: ");
             newLabel4.ChangeTextColor(Color.White);
-            newLabel4.SetLabelColorRGBA(220, 20, 60, 50);
+            newLabel4.SetLabelColorRGBA(220, 20, 60, 255);
             gameInformation.AddLabel(newLabel4);
 
             InGameLabel newLabel5 = new InGameLabel(0F, 145F, 200, 30, "Triangle Count: ");
             newLabel5.ChangeTextColor(Color.White);
-            newLabel5.SetLabelColorRGBA(220, 20, 60, 50);
+            newLabel5.SetLabelColorRGBA(220, 20, 60, 255);
             gameInformation.AddLabel(newLabel5);
 
             InGameLabel newLabel6 = new InGameLabel(0F, 200F, 200, 30, "Entity: ");
             newLabel6.ChangeTextColor(Color.White);
-            newLabel6.SetLabelColorRGBA(220, 20, 60, 50);
+            newLabel6.SetLabelColorRGBA(220, 20, 60, 255);
             gameInformation.AddLabel(newLabel6);
 
             
             InGameLabel entLabel1 = new InGameLabel(25, 290, 150, 30, "Attractiveness: ");
             entLabel1.ChangeTextColor(Color.White);
-            entLabel1.SetLabelColorRGBA(102, 102, 143, 50);
+            entLabel1.SetLabelColorRGBA(102, 102, 143, 255);
             gameInformation.AddLabel(entLabel1);
 
             InGameLabel entLabel2 = new InGameLabel(25, 330, 150, 30, "Fitness: ");
             entLabel2.ChangeTextColor(Color.White);
-            entLabel2.SetLabelColorRGBA(102, 102, 143, 50);
+            entLabel2.SetLabelColorRGBA(102, 102, 143, 255);
             gameInformation.AddLabel(entLabel2);
 			
 			InGameLabel entLabel3 = new InGameLabel(25, 370, 150, 30, "Life: ");
             entLabel3.ChangeTextColor(Color.White);
-            entLabel3.SetLabelColorRGBA(102, 102, 143, 50);
+            entLabel3.SetLabelColorRGBA(102, 102, 143, 255);
             gameInformation.AddLabel(entLabel3);
 			
 			//Entity selected draw position           
@@ -82,13 +91,13 @@ namespace MyGame
             entLabel4.SetLabelColorRGBA(0, 0, 0, 255);
             entLabel4.ButtonFlag = UIButtonFlags.pause;
 			entLabel4.AlternateText = "RESUME";
-			entLabel4.Padding = 10;
+			entLabel4.Padding = 50;
 			gameInformation.AddLabel(entLabel4);
 			
 			InGameLabel entLabel5 = new InGameLabel(25, 490, 150, 30, "EXIT");
             entLabel5.ChangeTextColor(Color.White);
             entLabel5.SetLabelColorRGBA(255, 0, 0, 255);
-			entLabel5.Padding = 10;
+			entLabel5.Padding = 50;
             entLabel5.ButtonFlag = UIButtonFlags.quit;
 			gameInformation.AddLabel(entLabel5);
 			
@@ -109,41 +118,29 @@ namespace MyGame
 			_gameInfo.SetEntity (e.SelectedEntity, 230F, _gameInfo.Width / 2);
 			e.GameState = _gameInfo.GameState;
 			
-
+			
+			CheckForGameEnd(e);
 			// -------------- Check for game finished ------------ //
-			if ((e.GameEntities.Count >= 10) && (!_gameFinished))
-			{
-				FinalizeGame(e);				
-			}
 			
-			// ------------ DRAW GAME UI INFO / OR FINAL STATS DATA ------------- //
 			
-			if (_gameFinished){
-				_statsInfo.Draw();
-				return;
-			}
-			else
-			{
-				_gameInfo.Draw ();
-			}
 		
 			
 
 			// -------------------- DRAW INGAME UI ----------------------- //
+			DrawGameInfo(e);
 			
-			
-			// --------------------- MAIN ENTITY LOOP ------------------------- //
-			foreach (IGameObject g in e.GameEntities)
-			{	
-				e.UpdateEntities ();
-				e.IsSelected (g as GameEntity);
-						
-				//No movement while 'Paused'
-				if (!(e.GameState == UIButtonFlags.pause))
-				{
+			//PAUSE
+			if (!(e.GameState == UIButtonFlags.pause))
+			{
+				// --------------------- MAIN ENTITY LOOP ------------------------------------------------- //
+				foreach (IGameObject g in e.GameEntities)
+				{	
+					e.UpdateEntities ();
+					e.IsSelected (g as GameEntity);
+							
+					//No movement while 'Paused'
 					Move.MovementChange (g, e);
 				}
-				
 			}
 
             // --- Add new entities to map list --- //
@@ -173,6 +170,8 @@ namespace MyGame
 		}
 
 
+		
+		
         //Gets information to populate the EntityGraphic on side
         public void UpdateSelectedEntity(EntityEnvironment e)
         {
@@ -193,7 +192,43 @@ namespace MyGame
 			e.GameState = UIButtonFlags.pause;
         }
 		
+		public void CheckForGameEnd (EntityEnvironment e)
+		{			
+			if (e.GameState == UIButtonFlags.quit)
+			{
+				e.GameOver = true;
+			}
+			
+			if ((e.GameEntities.Count >= 35) || (e.GameEntities.Count == 0))
+			{
+				_gameFinished = true;	
+			}
+		}
 		
+		public void DrawGameInfo (EntityEnvironment e)
+		{			
+			if (e.GameState == UIButtonFlags.pause)
+			{
+				_pauseGame.Draw();
+			}			
+			
+			if (!_gameFinished)
+			{
+				_gameInfo.Draw ();
+			}
+			
+			if (_gameFinished)
+			{
+				FinalizeGame (e);	
+			}
+			// ------------ DRAW GAME UI INFO / OR FINAL STATS DATA ------------- //
+			
+			if (_gameFinished)
+			{
+				_statsInfo.Draw ();
+			}
+			
+		}
 		
 		
 		public void FinalizeGame (EntityEnvironment e)
@@ -230,6 +265,11 @@ namespace MyGame
             statLabel4.ChangeTextColor(Color.White);
             statLabel4.SetLabelColorRGBA(220, 20, 60, 50);
             _statsInfo.AddLabel(statLabel4);
+			
+			InGameLabel statLabelmutation = new InGameLabel(0, 135, 300, 30, "Mutations " + _stats.Circles.Mutations.ToString());
+            statLabelmutation.ChangeTextColor(Color.White);
+            statLabelmutation.SetLabelColorRGBA(220, 20, 60, 50);
+            _statsInfo.AddLabel(statLabelmutation);
 			
 			InGameLabel statLabel5 = new InGameLabel(300F, 40F, 300, 30, "Finishing percentage: " + _stats.Circles.PopulationPercentagePost.ToString("0.##\\%"));
             statLabel5.ChangeTextColor(Color.White);
@@ -269,6 +309,11 @@ namespace MyGame
             statLabel11.SetLabelColorRGBA(220, 20, 60, 50);
             _statsInfo.AddLabel(statLabel11);
 			
+			InGameLabel statLabelmutation1 = new InGameLabel(0, 305F, 300, 30, "Mutations " + _stats.Squares.Mutations.ToString());
+            statLabelmutation1.ChangeTextColor(Color.White);
+            statLabelmutation1.SetLabelColorRGBA(220, 20, 60, 50);
+            _statsInfo.AddLabel(statLabelmutation1);
+			
 			InGameLabel statLabel12 = new InGameLabel(300F, 215F, 300, 30, "Finishing percentage: " + _stats.Squares.PopulationPercentagePost.ToString("0.##\\%"));
             statLabel12.ChangeTextColor(Color.White);
             statLabel12.SetLabelColorRGBA(220, 20, 60, 50);
@@ -305,6 +350,11 @@ namespace MyGame
             statLabel19.ChangeTextColor(Color.White);
             statLabel19.SetLabelColorRGBA(220, 20, 60, 50);
             _statsInfo.AddLabel(statLabel19);
+			
+			InGameLabel statLabelmutation2 = new InGameLabel(0, 475, 300, 30, "Mutations " + _stats.Trangles.Mutations.ToString());
+            statLabelmutation2.ChangeTextColor(Color.White);
+            statLabelmutation2.SetLabelColorRGBA(220, 20, 60, 50);
+            _statsInfo.AddLabel(statLabelmutation2);
 			
 			InGameLabel statLabel20 = new InGameLabel(300F, 385F, 300, 30, "Finishing percentage: " + _stats.Trangles.PopulationPercentagePost.ToString("0.##\\%"));
             statLabel20.ChangeTextColor(Color.White);

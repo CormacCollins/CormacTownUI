@@ -25,6 +25,7 @@ namespace MyGame
         private Animation _animationStatus;
         private bool _isSelected;
 		private bool _isDead;
+		private bool _isMutation;
 
         public GameEntity() {
             //Parameterless Constructor for Reflection
@@ -40,8 +41,9 @@ namespace MyGame
             //Want genes to be 'normal' or standard for the initial shape instantiation
             _life = 100;
 			_isDead = false;
-			_size = 20;
+			_size = 10;
 			_entityGenes = geneList;
+			_isMutation = geneList.ContainsMutation;
 			_canGiveBirth = false;
             AnimationStatus = Animation.none;
 
@@ -87,6 +89,18 @@ namespace MyGame
            get { return _ID; }
             set { _ID = value;   }
         }
+
+		public bool IsMutation
+		{
+			get
+			{
+				return _isMutation;
+			}
+			set
+			{
+				_isMutation = value;
+			}
+		}
 
 		public bool CanGiveBirth
 		{
@@ -205,18 +219,14 @@ namespace MyGame
         //Compare against entity that is 'selected' in the entity environment
         public void IsTheSelectedEntity(GameEntity e) {
             IsSelected = e != null ? ID == e.ID : false;
-            if (IsSelected)
-            {
-                DrawOutline();
-            }
         }
 
-        public void CollisionChecks(GameEntity foreignEntity, EntityEnvironment e)
-        {
+        public void CollisionChecks (GameEntity foreignEntity, EntityEnvironment e)
+		{
             // --- COLLISSION LOGIC -- //
             //CHeck if the object is not itself and the Collision Event timer will be true if requested elapsed time has passed
 
-            if ((_ID == foreignEntity.ID) == false)
+            if (((_ID == foreignEntity.ID) == false) || (!foreignEntity.CanGiveBirth))
             {
 
                 //Can now correctly check for the event of IGameObjects contacting eachother
@@ -335,23 +345,12 @@ namespace MyGame
                 g = 100 - g;
             }
             //Make g a low number / fraction then make it slightly higher (magic numbers for good death speed
-            g = (g / 10) * 2;
+            g = (g / 15) * 2;
 
             _life -= g;
         }
 
-        public void ShowDetails()
-        {
-            if (this.IsAt(SwinGame.MouseX(), SwinGame.MouseY()))
-            {
-                SwinGame.DrawRectangle(Color.Black, X + 20.0F, Y, 40, 50);
-                SwinGame.DrawText("L" +_life.ToString(), Color.Black, X + 25.0F, Y + 5.0F);
-				List<int> i = _entityGenes.ReturnGene("Attractiveness").GeneValue;
-				SwinGame.DrawText("A" + i[0].ToString(), Color.Black, X + 25.0F, Y + 25.0F);
-                SwinGame.DrawText("ID" + _ID.ToString(), Color.Black, X + 25.0F, Y + 35);
-            }
-        }
-		
+
 		// ------------ Take the difference between the genes and multiplies it. If this new number is close to the 'Interested' Entites Gene value then....  
 		// ------------ they will not mate - as this large difference has put the entity off. THis will work in the other direction. If the 'Interesed' ENtity is much lower than
 		// ------------ the Entity is is looking at, the difference will be negative and it will most likely be attracted
@@ -375,11 +374,6 @@ namespace MyGame
 
         public void Animate ()
 		{
-//			if (_animationStatus == Animation.none)
-//			{
-//				return;
-//			}
-
 			if (_animationStatus == Animation.birthing)
 			{
 				Birthing ();
@@ -395,18 +389,13 @@ namespace MyGame
 			{
 				DeathAnimation();
 			}
-			
-			if (IsTooWhite ())
-			{
-				DrawOutline();
-			}
         }
 
         public void Grow()
         {
             //assuming small size start
 			_size += 0.05F;
-            if (_size >= 20.0F)
+            if (_size >= 10.0F)
             {
                 _animationStatus = Animation.none;
                 _speedY = _randGenerator.RandomY;
@@ -417,7 +406,7 @@ namespace MyGame
         public void Birthing()
         {
             UpdateSpeed();
-            if (_time < (DateTime.Now + new TimeSpan(30000000)))
+            if (_time < (DateTime.Now + new TimeSpan(1000000)))
             {
                 _animationStatus = Animation.none;
                 _speedX = _randGenerator.RandomX;
@@ -426,43 +415,34 @@ namespace MyGame
              
         }
 
-        public void Stop()
-        {
-            SpeedX = 0;
-            SpeedY = 0;
-        }
 
         public void UpdateSpeed()
         {
-            this.X = (this.X) + ((this.SpeedX*2));// *(deltaTime/10));
-            this.Y = (this.Y) + ((this.SpeedY*2));// * (deltaTime / 10));
-        }
-
-        public Color RandomizeColor() {
-            Color randColor;
-            return randColor = SwinGame.RandomColor();
+            this.X = (this.X) + ((this.SpeedX));// *(deltaTime/10));
+            this.Y = (this.Y) + ((this.SpeedY));// * (deltaTime / 10));
         }
 		
 		public void DeathAnimation ()
 		{
 			
 			//Update animation for 'death'
-			if (_size > 10)
+			if (_time.Second > (DateTime.Now).Second)
 			{
-				_size -= 0.05F;
-			}
-			DrawEyes();
-			//Lower color to black so it 'dies'
-			EntityGenes.GetGenesList[0].GeneValue[0] = 0;
-        	EntityGenes.GetGenesList[0].GeneValue[1] = 0;
-			EntityGenes.GetGenesList[0].GeneValue[2] = 0;
-			
-			
-			if (_time < (DateTime.Now + new TimeSpan(30000000)))
-            {
 				_isDead = true;
 				_animationStatus = Animation.none;
-			}       
+			}
+			else
+			{
+				if (_size > 10)
+				{
+					_size -= 0.05F;
+				}
+				DrawEyes ();
+				//Lower color to black so it 'dies'
+				EntityGenes.GetGenesList [0].GeneValue [0] = 0;
+				EntityGenes.GetGenesList [0].GeneValue [1] = 0;
+				EntityGenes.GetGenesList [0].GeneValue [2] = 0;
+			}
 		}
 		
 		public void DrawEyes ()
@@ -484,15 +464,11 @@ namespace MyGame
 			return false;
 		}
 
-
-
-        public abstract void Draw ();
+		public abstract void Draw ();
 		public abstract void Move (float deltaTime);
 		public abstract void CheckCollisionScreen(); //Could make 'OuterWall' objects to check against, that way don't need ScreenCHeck
 		public abstract GameEntity CreateOffspring(GameEntity g);
-        public abstract void DrawOutline();
 		public abstract void SetUpChildEnt ();
-		//public abstract void DeathEyes();
 
 
     }

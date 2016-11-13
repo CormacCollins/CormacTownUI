@@ -89,6 +89,7 @@ namespace MyGame
 
 		public ShowInfoBox(float x, float y, float width, float height)
         {
+			_gameState = UIButtonFlags.none;
             _labels = new List<InGameLabel>();
 
             _x = x;
@@ -135,7 +136,7 @@ namespace MyGame
 				if (l.IsAt (SwinGame.MousePosition().X , SwinGame.MousePosition().Y) && SwinGame.MouseClicked(MouseButton.LeftButton))
 				{
 					_gameState = l.ButtonFlag;
-					PauseButtonClicked(l);
+					ButtonCase(l);
 				}
             }
 
@@ -155,16 +156,18 @@ namespace MyGame
             _labels.Add(l);
         }
 		
-		public void PauseButtonClicked (InGameLabel l)
+		public void ButtonCase (InGameLabel l)
 		{
 			switch (l.ButtonFlag)
 			{
-				case(UIButtonFlags.none): l.ButtonFlag = UIButtonFlags.pause;
+				case(UIButtonFlags.resume): l.ButtonFlag = UIButtonFlags.pause;
 					l.Text = "PAUSE";
 					break;
-				case(UIButtonFlags.pause): l.ButtonFlag = UIButtonFlags.none;
-					l.Text = "RESUME";
+				case(UIButtonFlags.pause): l.ButtonFlag = UIButtonFlags.resume;
+					l.Text = "RESUME";				
 					break;
+				case(UIButtonFlags.quit): _gameState = UIButtonFlags.quit;
+						break;
 				default: break;	
 			}			
 		}

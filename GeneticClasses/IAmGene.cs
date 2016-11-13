@@ -9,6 +9,8 @@ namespace MyGame
 			get;
 		}
 		
+		bool IsMutated{get;set;}
+		
 		string Name{
 			get;
 		}

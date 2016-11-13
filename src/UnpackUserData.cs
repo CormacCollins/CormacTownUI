@@ -40,8 +40,8 @@ namespace MyGame
 				
 				//Add all the selected traits to the new entity + 'PrepareEntity' sets all the important flags which can't be set from reflection
 				Random RandomX = new Random((int)DateTime.Now.Ticks);
-				Random RandomY = new Random((int)DateTime.Now.Ticks);
-				int x = GetAndRemove(_xPos, RandomX.Next(1, _xPos.Count-1));
+				Random RandomY = new Random((int)(DateTime.Now.Ticks)*RandomX.Next());
+				int x = GetAndRemove(_xPos,    RandomX.Next(1, _xPos.Count-1));
 				int y = GetAndRemove(_yPos, RandomY.Next(1, _yPos.Count-1));
 				(newEnt as GameEntity).PrepareEntity( x, y , newList);
 				(newEnt as GameEntity).SetUpChildEnt();
@@ -58,16 +58,16 @@ namespace MyGame
 		
 		public void FillX (List<int> s)
 		{
-			for (int i = 1; i < 58; i++)
+			for (int i = 1; i < 29; i++)
 			{
-				s.Add(i*10);
+				s.Add(i*20);
 			}			
 		}
 		public void FillY (List<int> s)
 		{
-			for (int i = 1; i < 59; i++)
+			for (int i = 1; i < 28; i++)
 			{
-				s.Add(i*10);
+				s.Add(i*20);
 			}			
 		}
 

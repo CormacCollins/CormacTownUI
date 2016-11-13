@@ -13,7 +13,7 @@ namespace MyGame
 		float _avgFitnessPost;
 		float _avgAttractivenssPre;
 		float _avgAttractivenssPost;
-		int _mutations;		
+		int _mutations;	
 		
 		public int[,] _DataPlot{
 			get

@@ -1,30 +1,41 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug-Windows|x86" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="UI\SelectionPage.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="GameUI\ShowInfoBox.cs">
     <Files>
-      <File FileName="UI\SelectionPage.cs" Line="347" Column="6" />
-      <File FileName="UI\LoadingTask.cs" Line="17" Column="39" />
-      <File FileName="c:\Users\corma\Desktop\CormacTownJoint\src\Statistics.cs" Line="1" Column="1" />
-      <File FileName="c:\Users\corma\Desktop\CormacTownJoint\src\EntityMain.cs" Line="1" Column="1" />
+      <File FileName="src\EntityEnvironment.cs" Line="40" Column="22" />
+      <File FileName="Controller\UpdateGame.cs" Line="110" Column="15" />
+      <File FileName="src\StatsStruct.cs" Line="16" Column="19" />
+      <File FileName="Controller\Move.cs" Line="13" Column="4" />
+      <File FileName="Entities\GameEntity.cs" Line="264" Column="18" />
+      <File FileName="Entities\Square.cs" Line="31" Column="106" />
+      <File FileName="Entities\Triangle.cs" Line="77" Column="31" />
+      <File FileName="Entities\Circle.cs" Line="32" Column="66" />
+      <File FileName="GameUI\ShowInfoBox.cs" Line="90" Column="66" />
+      <File FileName="src\EntityMain.cs" Line="44" Column="1" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State expanded="True">
           <Node name="CormacTownJoint" expanded="True">
-            <Node name="UI" expanded="True">
-              <Node name="SelectionPage.cs" selected="True" />
+            <Node name="Controller" expanded="True" />
+            <Node name="Entities" expanded="True" />
+            <Node name="GameUI" expanded="True">
+              <Node name="ShowInfoBox.cs" selected="True" />
             </Node>
+            <Node name="src" expanded="True" />
           </Node>
         </State>
       </Pad>
-      <Pad Id="MonoDevelop.NUnit.TestPad">
-        <State expanded="True" selected="True" />
+      <Pad Id="MonoDevelop.Debugger.WatchPad">
+        <State />
       </Pad>
     </Pads>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore>
-      <Breakpoint file="C:\Users\corma\Desktop\CormacTownJoint\UI\LoadingTask.cs" line="20" column="1" />
+      <Breakpoint file="C:\Users\corma\Desktop\CormacTownJoint\Entities\Triangle.cs" line="86" column="82" />
+      <Breakpoint file="C:\Users\corma\Desktop\CormacTownJoint\src\EntityMain.cs" line="44" column="1" />
+      <Breakpoint file="C:\Users\corma\Desktop\CormacTownJoint\Controller\UpdateGame.cs" line="204" column="15" />
     </BreakpointStore>
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />

@@ -18,18 +18,18 @@ namespace MyGame
 		{
 		}
 		
-		public override void Draw()
+		public override void Draw ()
 		{			
+			
 			SwinGame.FillCircle(this.Color, this.X, this.Y, this.Size);
-			//this.DrawEyes();
+			if (this.IsMutation)
+			{
+				DrawMutationTag();
+			}
 		}
-
-        public override void DrawOutline()
-        {
-            //Color randColor = this.RandomizeColor();
-			SwinGame.DrawCircle(Color.Black, this.X, this.Y, this.Size);
-            SwinGame.DrawCircle(Color.Black, this.X, this.Y, this.Size + 1);
-        }
+		public void DrawMutationTag(){
+			SwinGame.DrawRectangle(Color.White, this.X - (this.Size/4) + this.Size, this.Y - (this.Size/4) + this.Size, this.Size/2, this.Size/2);
+		}
 
 
         public override void Move(float deltaTime)

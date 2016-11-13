@@ -10,12 +10,26 @@ namespace MyGame
     {
 		private List<int> _geneValue;
         private string _name;
+		private bool _isMutated;
 		
-		public PhysicalStrength (int value)
+		public PhysicalStrength (int value, bool mutated=false)
 		{
+			_isMutated = mutated;
             _name = "PhysicalStrength";
             _geneValue = new List<int>();
             _geneValue.Add(value);
+		}
+
+		public bool IsMutated
+		{
+			get
+			{
+				return _isMutated;
+			}
+			set
+			{
+				_isMutated = value;
+			}
 		}
 
         public List<int> GeneValue
@@ -36,48 +50,53 @@ namespace MyGame
             set { _name = value; }
         }
 
-        public IAmGene CombineGenes(IAmGene g)
-        {
+        public IAmGene CombineGenes (IAmGene g)
+		{
+			int gVal = CouldMutate (g.GeneValue [0], _geneValue [0]);
+			if (gVal > 100){
+				gVal = 100;
+			}
             //Apply CouldMutate Fuction to potentially mutate - else slightly change value from parents for child
-            PhysicalStrength atr = new PhysicalStrength(CouldMutate(g.GeneValue[0], _geneValue[0]));
+            PhysicalStrength atr = new PhysicalStrength(gVal, _isMutated);
             return (atr as IAmGene);
         }
 
-        public int CouldMutate(int a, int b)
-        {
-            //Get difference between strengths - make sure it is pos
-            //ALso taking note of the biggest and smallest value
-            int biggest;
-            int smallest;
-            int diff = a - b;
-            if (diff < 0)
-            {
-                biggest = b;
-                smallest = a;
-                diff *= -1;
-            }
-            else if (diff > 0)
-            {
-                biggest = a;
-                smallest = b;
-            }
-            else //If zero
-            {
-                diff = 1;
-                biggest = a;
-                smallest = a;
-            }
+        public int CouldMutate (int a, int b)
+		{
+			//Get difference between strengths - make sure it is pos
+			//ALso taking note of the biggest and smallest value
+			int biggest;
+			int smallest;
+			int diff = a - b;
+			if (diff < 0)
+			{
+				biggest = b;
+				smallest = a;
+				diff *= -1;
+			}
+			else if (diff > 0)
+			{
+				biggest = a;
+				smallest = b;
+			}
+			else //If zero
+			{
+				diff = 1;
+				biggest = a;
+				smallest = a;
+			}
 
 
-            Random newRand = new Random();
-            //if random event (1/20) we apply a random multiplier to a portion of the 'Biggest' and add it to the bigger - This is a mutation
-            int randNumber = newRand.Next(20);
-            if (randNumber == 1)
-            {
-                Random newRand2 = new Random();
-                int biggestPortion = biggest / 10;
-                return (newRand2.Next(5) * biggestPortion) + biggest;
-            }
+			Random newRand = new Random ();
+			//if random event (1/20) we apply a random multiplier to a portion of the 'Biggest' and add it to the bigger - This is a mutation
+			int randNumber = newRand.Next (10);
+			if (randNumber == 5)
+			{
+				_isMutated = true;
+				Random newRand2 = new Random ();
+				int biggestPortion = biggest / 10;
+				return (newRand2.Next (5) * biggestPortion) + biggest;
+			}
             //Else we add a small portion to the smaller value - (eveolution is slow!)
          	else
 			{

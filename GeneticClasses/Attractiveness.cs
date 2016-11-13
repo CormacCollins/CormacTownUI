@@ -10,11 +10,24 @@ namespace MyGame
     {
 		private List<int> _geneValue;
 		private string _name;
+		private bool _isMutated;
 		
-		public Attractiveness(int value){
+		public Attractiveness(int value, bool mutated=false){			
+			_isMutated = mutated;
 			_name = "Attractiveness";
 			_geneValue = new List<int>();
 			_geneValue.Add(value);
+		}
+
+		public bool IsMutated
+		{
+			get{
+				return _isMutated;
+			}
+			set
+			{
+				_isMutated = value;
+			}
 		}
 
 		public List<int> GeneValue
@@ -31,9 +44,12 @@ namespace MyGame
 		
 		//Need to code so small variance occurs with change of mutation
 		public IAmGene CombineGenes(IAmGene g){
-
+			int gVal = CouldMutate (g.GeneValue [0], _geneValue [0]);
+			if (gVal > 100){
+				gVal = 100;
+			}
             //Apply CouldMutate Fuction to potentially mutate - else slightly change value from parents for child
-			Attractiveness atr = new Attractiveness(CouldMutate(g.GeneValue[0], _geneValue[0]));
+			Attractiveness atr = new Attractiveness(gVal, _isMutated);
 			return (atr as IAmGene);
 		}
 
@@ -71,15 +87,16 @@ namespace MyGame
 
 			Random newRand = new Random ();
 			//if random event (1/20) we apply a random multiplier to a portion of the 'Biggest' and add it to the bigger - This is a mutation
-			int randNumber = newRand.Next (15);
+			int randNumber = newRand.Next (10);
 			
 			// ------------------- 1 in 15 change of RANDOM MUTATION ---------------------- //
 			
-			if (randNumber == 1)
+			if (randNumber == 5)
 			{
+				_isMutated = true;
 				Random newRand2 = new Random ();
 				int biggestPortion = biggest / 10;
-				return (newRand2.Next (5) * biggestPortion) + biggest;
+				return (newRand2.Next (5) * biggestPortion) + biggest;				
 			}
 			// ------------------- OR A GENERALIZED SMALLER INCREASE BELOW ---------------- //
             else

@@ -11,9 +11,11 @@ namespace MyGame
 		private List<int> _geneValue = new List<int>();
 		private string _name;
 		private GeneEnum _type;
+		private bool _isMutated;
 
-		public ColorGene (int r = 0, int g = 0, int b = 0)
+		public ColorGene (int r = 0, int g = 0, int b = 0, bool mutated = false)
 		{
+			_isMutated = mutated;
 			_name = "ColorGene";
 			if (r > 255){
 				r = 0;
@@ -29,6 +31,18 @@ namespace MyGame
 			_geneValue.Add(g);
 			_geneValue.Add(b);
 			_type = GeneEnum.ColorGene;
+		}
+
+		public bool IsMutated
+		{
+			get
+			{
+				return _isMutated;
+			}
+			set
+			{
+				_isMutated = value;
+			}
 		}
 
 		public string Name

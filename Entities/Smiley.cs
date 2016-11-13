@@ -32,12 +32,6 @@ namespace MyGame
             SwinGame.DrawBitmap(_b, this.X, this.Y);     
         }
 
-        public override void DrawOutline()
-        {
-            SwinGame.DrawCircle(Color.Gold, this.X, this.Y, (int)(this.Size + 0.5F));
-        }
-
-
 
         public override void Move(float deltaTime)
         {

@@ -15,21 +15,21 @@ namespace MyGame
 		
 		public override void SetUpChildEnt ()
 		{
-			this.Size = 20;
+			this.Size = 15;
 		}
 
 		public override void Draw()
 		{
 			SwinGame.FillRectangle(this.Color, this.X - (this.Size / 2), this.Y - (this.Size / 2), this.Size, this.Size);
+			if (this.IsMutation)
+			{
+				DrawMutationTag();
+			}
 		}
-
-        public override void DrawOutline()
-        {
-            //SwinGame.DrawRectangle(Color.Black, this.X - (this.Size / 2), this.Y - (this.Size / 2), this.Size + 1, this.Size + 1);
-            //Color randColor = this.RandomizeColor();
-            SwinGame.DrawRectangle(Color.Black, this.X - (this.Size / 2) - 1, this.Y - (this.Size / 2) - 1, this.Size + 2, this.Size + 2);
-            SwinGame.DrawRectangle(Color.Black, this.X - (this.Size / 2) - 2, this.Y - (this.Size / 2) - 2, this.Size + 4, this.Size + 4);
-        }
+		
+		public void DrawMutationTag(){
+			SwinGame.DrawRectangle(Color.White, this.X + (this.Size/4), this.Y + (this.Size/4), this.Size/2, this.Size/2);
+		}
 
         public override void Move(float deltaTime)
 		{

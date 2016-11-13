@@ -11,21 +11,25 @@ namespace MyGame
         public EntityMain (EntityEnvironment gameData)
 		{
 			//Flag for when button in game is pressed
-			quitGame = false;
+			gameData.GameOver = false;
+			
 			
 			UpdateGame gameUpdate = new UpdateGame (gameData);
 
 
 			var gameTimer = SwinGame.CreateTimer ();
 			gameTimer.Start ();
+			
+			//SwinGame.ToggleWindowBorder();
+			
 
-			while (false == SwinGame.WindowCloseRequested () || quitGame)
+			while (false == SwinGame.WindowCloseRequested ())
 			{
 				gameData.DeltaTime = gameTimer.Ticks;
-              
+              	
 
 				SwinGame.ProcessEvents ();
-				SwinGame.ClearScreen (Color.White);
+				SwinGame.ClearScreen (SwinGame.RGBAColor (224, 224, 224, 80));
 
 				
 				gameUpdate.DrawEntities (gameData);
@@ -35,11 +39,11 @@ namespace MyGame
 				SwinGame.RefreshScreen (60);
 				gameTimer.Reset ();
 				
-//				if (gameData.GameState == UIButtonFlags.quit)
-//				{
-//					quitGame = true;
-//				}
+				if (gameData.GameOver){
+					break;
+				}
             }
+			
         }
     }
 }

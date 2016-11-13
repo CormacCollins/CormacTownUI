@@ -23,7 +23,7 @@ namespace MyGame
 		
 		public override void SetUpChildEnt ()
 		{
-			this.Size = 20;
+			this.Size = 15;
             //Populate triangle outer points of the middle x - y coodinates
             _pointAx = X - this.Size;
             _pointBx = X + this.Size;
@@ -76,15 +76,16 @@ namespace MyGame
 		{
             CalculatePoints();
 			SwinGame.FillTriangle(this.Color, this.PointAx, this.PointAy, this.PointBx, this.PointBy, this.PointCx, this.PointCy);
+			if (this.IsMutation)
+			{
+				DrawMutationTag();
+			}
         }
+		
+		public void DrawMutationTag(){
+			SwinGame.DrawRectangle(Color.White, this.X - (this.Size/2) , this.Y, this.Size/2, this.Size/2);
+		}
 
-        public override void DrawOutline()
-        {
-            CalculatePoints();
-            //Color randColor = this.RandomizeColor();
-            SwinGame.DrawTriangle(Color.Black, this.PointAx - 1, this.PointAy + 1, this.PointBx + 1, this.PointBy + 1, this.PointCx, this.PointCy - 1);
-            SwinGame.DrawTriangle(Color.Black, this.PointAx - 2, this.PointAy + 2, this.PointBx + 2, this.PointBy + 2, this.PointCx, this.PointCy - 2);
-        }
 
         private void CalculatePoints()
         {
