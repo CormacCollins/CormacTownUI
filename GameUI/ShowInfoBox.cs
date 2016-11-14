@@ -168,6 +168,8 @@ namespace MyGame
 					break;
 				case(UIButtonFlags.quit): _gameState = UIButtonFlags.quit;
 						break;
+				case(UIButtonFlags.finish): _gameState = UIButtonFlags.finish;
+				break;
 				default: break;	
 			}			
 		}

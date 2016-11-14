@@ -8,6 +8,10 @@ namespace MyGame
 {
     public class PhysicalStrength : IAmGene
     {
+		/// <summary>
+		/// Gene used in dominance for an Entity also determines speed of death
+		/// </summary>
+		
 		private List<int> _geneValue;
         private string _name;
 		private bool _isMutated;
@@ -20,49 +24,33 @@ namespace MyGame
             _geneValue.Add(value);
 		}
 
-		public bool IsMutated
-		{
-			get
-			{
-				return _isMutated;
-			}
-			set
-			{
-				_isMutated = value;
-			}
+		public bool IsMutated{
+			get{return _isMutated;}
+			set{_isMutated = value;}
 		}
 
-        public List<int> GeneValue
-		{
-			get
-			{
-				return _geneValue;
-			}
-			set
-			{
-				_geneValue = value;
-			}
+        public List<int> GeneValue{
+			get{return _geneValue;}
+			set{_geneValue = value;}
 		}
 
-        public string Name
-        {
+        public string Name{
             get { return _name; }
             set { _name = value; }
         }
 
-        public IAmGene CombineGenes (IAmGene g)
-		{
-			int gVal = CouldMutate (g.GeneValue [0], _geneValue [0]);
+        public IAmGene CombineGenes (IAmGene g){
+			bool didMutate = false;
+			int gVal = CouldMutate (g.GeneValue [0], _geneValue [0], ref didMutate);
 			if (gVal > 100){
 				gVal = 100;
 			}
             //Apply CouldMutate Fuction to potentially mutate - else slightly change value from parents for child
-            PhysicalStrength atr = new PhysicalStrength(gVal, _isMutated);
+            PhysicalStrength atr = new PhysicalStrength(gVal, didMutate);
             return (atr as IAmGene);
         }
 
-        public int CouldMutate (int a, int b)
-		{
+		public int CouldMutate (int a, int b, ref bool didMutate){
 			//Get difference between strengths - make sure it is pos
 			//ALso taking note of the biggest and smallest value
 			int biggest;
@@ -92,7 +80,7 @@ namespace MyGame
 			int randNumber = newRand.Next (10);
 			if (randNumber == 5)
 			{
-				_isMutated = true;
+				didMutate = true;
 				Random newRand2 = new Random ();
 				int biggestPortion = biggest / 10;
 				return (newRand2.Next (5) * biggestPortion) + biggest;
@@ -114,8 +102,6 @@ namespace MyGame
 				};
 				return smallest;
             }
-        }
-
-       
+        }       
     }
 }

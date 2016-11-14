@@ -4,7 +4,7 @@ namespace MyGame
 {
 	public enum UIButtonFlags
 	{
-		quit, pause, resume, none
+		quit, pause, resume, finish, none
 	}
 }
 

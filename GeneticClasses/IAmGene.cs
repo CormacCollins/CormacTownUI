@@ -5,6 +5,7 @@ namespace MyGame
 {
 	public interface IAmGene
 	{
+		//Important for Universal combinatino of gene types
 		List<int> GeneValue{
 			get;
 		}
@@ -15,8 +16,7 @@ namespace MyGame
 			get;
 		}
 		
-		IAmGene CombineGenes(IAmGene g);
-			
+		IAmGene CombineGenes(IAmGene g);			
 	}
 }
 

@@ -4,7 +4,10 @@ using System.Collections.Generic;
 
 namespace MyGame
 {
-	//Genes can be easily added
+	/// <summary>
+	/// Contains RGB values for entity color that combine when a new entity is created
+	/// Future iterations would seperate this from genetics, not necessary and causes the issue with extra weight in 'GeneValue'
+	/// </summary>
 	public class ColorGene : IAmGene
 	{
 		//3 values for each RGB value
@@ -33,20 +36,12 @@ namespace MyGame
 			_type = GeneEnum.ColorGene;
 		}
 
-		public bool IsMutated
-		{
-			get
-			{
-				return _isMutated;
-			}
-			set
-			{
-				_isMutated = value;
-			}
+		public bool IsMutated{
+			get{return _isMutated;}
+			set{_isMutated = value;}
 		}
 
-		public string Name
-		{
+		public string Name{
 			get{return _name;}
 		}
 
@@ -55,8 +50,7 @@ namespace MyGame
 			set {_geneValue = value;}
 		}
 
-		public GeneEnum Type
-		{
+		public GeneEnum Type{
 			get{return _type;}
 			set{_type = value;}
 		}		
@@ -81,23 +75,6 @@ namespace MyGame
 			c = a + b;
             return c;
         }
-		
-	
-		
-		//To be configured later!
-//		public ColorGene LowerGeneStrength(ColorGene a, int i)
-//		{
-//			a.GeneValue = a.GeneValue / i;
-//			return a;
-//		}
-
-//		public ColorGene IncreaseGeneStrength (ColorGene a, float i)
-//		{
-//			a.GeneValue = Convert.ToInt32(a.GeneValue * i) ;
-//			return a;
-//			return NotImplementedException;
-//		}
-
 	}
 }
 

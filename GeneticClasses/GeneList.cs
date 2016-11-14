@@ -7,62 +7,50 @@ namespace MyGame
 {
 	public class GeneList
 	{
-		//Need to fugure out how Mutation will be implimented
-
+		/// <summary>
+		/// Holds the genetic Values and informatino for an individual Entity
+		/// can use the function 'CombineGeneList'
+		/// </summary>
 		private List<IAmGene> _genes = new List<IAmGene>(); 
 		private bool _containsMutation;
 		
-		public GeneList(bool mutated=false)
-        {
+		public GeneList(bool mutated=false){
 			_containsMutation = mutated;	
         }
 
-		public bool ContainsMutation
-		{
-			get
-			{
-				return _containsMutation;
-			}
-			set
-			{
-				_containsMutation = value;
-			}
+		public bool ContainsMutation{
+			get{return _containsMutation;}
+			set{_containsMutation = value;}
 		}
 
-		public List<IAmGene> GetGenesList
-		{
+		public List<IAmGene> GetGenesList{
 			get{return _genes;}
 		}
 		
-		public void AddGene(IAmGene g)
-		{
+		public void AddGene(IAmGene g){
 			_genes.Add(g);
 		}
 		
-		public bool ContainsGeneInstance (IAmGene g)
-		{
-			// ------------ Is this better / faster than foreach through a loop
+		public bool ContainsGeneInstance (IAmGene g){
 			return Object.ReferenceEquals (this, g);
 		}
 		
 		//Should return a Gene from which you search i.e. Type = ColorGene it will return it from the geneList
-		public IAmGene ReturnGene (string t)
-		{
+		public IAmGene ReturnGene (string t){
 			foreach (IAmGene g in _genes)
 			{
-				if (g.Name == t)
-				{
+				if (g.Name == t){
 					return  g;
 				}
 			}
-			System.Diagnostics.Debug.WriteLine("Did not find Gene");
 			return null;
 		}
 		
-		public GeneList CombineGeneLists (GeneList list)
-		{
+		public GeneList CombineGeneLists (GeneList list){
 			GeneList newList = new GeneList ();
-			//Fix while figuring bug!
+			
+			// ------------------ Hard coding used during a bug ------------------------- //
+			
 			IAmGene newgene = list.GetGenesList [0];
 			IAmGene newgene2 = list.GetGenesList [1];
 			IAmGene newgene3 = list.GetGenesList [2];
@@ -86,8 +74,6 @@ namespace MyGame
 
             return newList;			
 		}
-
-
 	}
 }
 

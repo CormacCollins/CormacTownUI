@@ -1,41 +1,22 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug-Windows|x86" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="GameUI\ShowInfoBox.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Entities\GameEntity.cs">
     <Files>
-      <File FileName="src\EntityEnvironment.cs" Line="40" Column="22" />
-      <File FileName="Controller\UpdateGame.cs" Line="110" Column="15" />
-      <File FileName="src\StatsStruct.cs" Line="16" Column="19" />
-      <File FileName="Controller\Move.cs" Line="13" Column="4" />
-      <File FileName="Entities\GameEntity.cs" Line="264" Column="18" />
-      <File FileName="Entities\Square.cs" Line="31" Column="106" />
-      <File FileName="Entities\Triangle.cs" Line="77" Column="31" />
-      <File FileName="Entities\Circle.cs" Line="32" Column="66" />
-      <File FileName="GameUI\ShowInfoBox.cs" Line="90" Column="66" />
-      <File FileName="src\EntityMain.cs" Line="44" Column="1" />
+      <File FileName="src\EntityEnvironment.cs" Line="1" Column="1" />
+      <File FileName="UI\OpeningPage.cs" Line="1" Column="1" />
+      <File FileName="UI\Program.cs" Line="1" Column="1" />
+      <File FileName="Entities\Square.cs" Line="1" Column="1" />
+      <File FileName="Entities\GameEntity.cs" Line="383" Column="28" />
+      <File FileName="Controller\UpdateGame.cs" Line="1" Column="1" />
+      <File FileName="GeneticClasses\GeneList.cs" Line="1" Column="1" />
+      <File FileName="src\UnpackUserData.cs" Line="1" Column="1" />
+      <File FileName="c:\Users\corma\Desktop\CormacTownJoint\src\EntityMain.cs" Line="1" Column="1" />
+      <File FileName="c:\Users\corma\Desktop\CormacTownJoint\GameUI\ShowInfoBox.cs" Line="1" Column="1" />
     </Files>
-    <Pads>
-      <Pad Id="ProjectPad">
-        <State expanded="True">
-          <Node name="CormacTownJoint" expanded="True">
-            <Node name="Controller" expanded="True" />
-            <Node name="Entities" expanded="True" />
-            <Node name="GameUI" expanded="True">
-              <Node name="ShowInfoBox.cs" selected="True" />
-            </Node>
-            <Node name="src" expanded="True" />
-          </Node>
-        </State>
-      </Pad>
-      <Pad Id="MonoDevelop.Debugger.WatchPad">
-        <State />
-      </Pad>
-    </Pads>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore>
-      <Breakpoint file="C:\Users\corma\Desktop\CormacTownJoint\Entities\Triangle.cs" line="86" column="82" />
-      <Breakpoint file="C:\Users\corma\Desktop\CormacTownJoint\src\EntityMain.cs" line="44" column="1" />
-      <Breakpoint file="C:\Users\corma\Desktop\CormacTownJoint\Controller\UpdateGame.cs" line="204" column="15" />
+      <Breakpoint file="C:\Users\corma\Desktop\CormacTownJoint\Controller\UpdateGame.cs" line="218" column="1" />
     </BreakpointStore>
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />

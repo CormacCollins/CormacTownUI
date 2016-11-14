@@ -50,7 +50,7 @@ namespace MyGame
 			this.Size = new System.Drawing.Size (800, 600);
 			this.StartPosition = FormStartPosition.CenterScreen;
 			this.FormBorderStyle = FormBorderStyle.Fixed3D;
-			this.BackColor = System.Drawing.Color.FromArgb(192, 192, 192);
+			this.BackColor = System.Drawing.Color.White;
 			
 			//prepare progress bar - to be added when 'Start' button clicked
 			_progressBar = new ProgressBar();
@@ -60,21 +60,31 @@ namespace MyGame
 			_progressBar.Maximum = 30000;
 			_progressBar.Step = 1;
 			
+			//Underlay//
+			CormacTownLabel underlay = new CormacTownLabel(24);
+			underlay.Width = this.Width;
+			underlay.Height = 100;
+			underlay.BackColor = System.Drawing.Color.Black;
+			underlay.Location = new System.Drawing.Point(0, 0);
 			
 			
 			// ------- Heading ----------- //
 			CormacTownLabel titleLabel = new CormacTownLabel(24);
 			titleLabel.Text = "Cormac Town";
-			titleLabel.Location = new System.Drawing.Point(this.Width/2 - (titleLabel.Width/3) - 15, 10);
+			
+			titleLabel.BackColor = System.Drawing.Color.Black;
+			titleLabel.Location = new System.Drawing.Point((0 + this.Width/2) - (titleLabel.Width) + 200, 20);
 			
 			
 			//------------ Instruction ----------- //
 			CormacTownLabel instructionLabel = new CormacTownLabel(10);
 			instructionLabel.Width = 500;
 			instructionLabel.Height = 50;
+			instructionLabel.BackColor = System.Drawing.Color.Black;
+			instructionLabel.Width = this.Width;
 			//instructionLabel.Font = new System.Drawing.Font("Calibri", 10);
-			instructionLabel.Text = "Modify the type of your shape: Attractiveneess, Fitness & RGB color.\nThen select the entity type Triangle, Circle, Square.\nEnjoy. Or don't. I don't care.";
-			instructionLabel.Location = new System.Drawing.Point(10, 65);
+			instructionLabel.Text = "Modify the type of your shape: Attractiveneess, Fitness & RGB color.\nThen select the entity type Triangle, Circle, Square.";
+			instructionLabel.Location = new System.Drawing.Point(0, 75);
 			
 						
 			// --------------- Start label ---------------------------- //
@@ -92,15 +102,16 @@ namespace MyGame
 			trackBar1.SetRange(1, 100);
 			trackBar1.Value = 50;
 			_AttractivenssValue = trackBar1.Value;
-			trackBar1.Location = new System.Drawing.Point(10, 130);
+			trackBar1.Location = new System.Drawing.Point(10, 160);
 			trackBar1.Scroll += new EventHandler(trackBar1_Scroll);
 			
 			// -------------- Attractiveness Label-------------- //	
 			_label1 = new CormacTownLabel(12); //Smaller font
 			_label1.Height = 30;
 			_label1.Width = 190;
+			_label1.ForeColor = System.Drawing.Color.Black;
 			_label1.Text = "Attractiveness: " + trackBar1.Value.ToString();
-			_label1.Location = new System.Drawing.Point(120, 130);
+			_label1.Location = new System.Drawing.Point(120, 160);
 			
 			// -------------- Fitness ------------------- //
 			
@@ -110,7 +121,7 @@ namespace MyGame
 			trackBar2.SetRange(1, 100);
 			trackBar2.Value = 50;
 			_FitnessValue = trackBar2.Value;
-			trackBar2.Location = new System.Drawing.Point(10, 180);  			
+			trackBar2.Location = new System.Drawing.Point(10, 210);  			
 			trackBar2.Scroll += new EventHandler(trackBar2_Scroll);		
 			
 			// -------------- Fitness Label --------------- //	
@@ -118,8 +129,9 @@ namespace MyGame
 			_label2 = new CormacTownLabel(12); //Smaller font
 			_label2.Height = 30;
 			_label2.Width = 150;
+			_label2.ForeColor = System.Drawing.Color.Black;
 			_label2.Text = "Fitness: " + trackBar2.Value.ToString();
-			_label2.Location = new System.Drawing.Point(120, 180);
+			_label2.Location = new System.Drawing.Point(120, 210);
 			
 			// -------------- Color ------------------- //		
 			TrackBar trackBar3Color1 = new TrackBar();
@@ -130,7 +142,7 @@ namespace MyGame
 			trackBar3Color1.Value = 35;
 			trackBar3Color1.Width = 100;
 			_ColorValue1 = trackBar3Color1.Value;
-			trackBar3Color1.Location = new System.Drawing.Point(10, 240);				
+			trackBar3Color1.Location = new System.Drawing.Point(10, 260);				
 			trackBar3Color1.Scroll += new EventHandler(trackBar3_Scroll);
 			
 			TrackBar trackBar3Color2 = new TrackBar();
@@ -141,7 +153,7 @@ namespace MyGame
 			trackBar3Color2.Value = 15;
 			trackBar3Color2.Width = 100;
 			_ColorValue2 = trackBar3Color2.Value;
-			trackBar3Color2.Location = new System.Drawing.Point(10, 290);				
+			trackBar3Color2.Location = new System.Drawing.Point(10, 310);				
 			trackBar3Color2.Scroll += new EventHandler(trackBar3_Scroll);
 			
 			TrackBar trackBar3Color3 = new TrackBar();
@@ -152,7 +164,7 @@ namespace MyGame
 			trackBar3Color3.Value = 25;
 			trackBar3Color3.Width = 100;
 			_ColorValue3 = trackBar3Color3.Value;
-			trackBar3Color3.Location = new System.Drawing.Point(10, 340);				
+			trackBar3Color3.Location = new System.Drawing.Point(10, 360);				
 			trackBar3Color3.Scroll += new EventHandler(trackBar3_Scroll);
 			
 			
@@ -161,28 +173,31 @@ namespace MyGame
 			_ColorLabel1 = new CormacTownLabel(12); //Smaller font
 			_ColorLabel1.Height = 30;
 			_ColorLabel1.Width = 100;
+			_ColorLabel1.ForeColor = System.Drawing.Color.Black;
 			_ColorLabel1.Text = "Red: " + _ColorValue1.ToString();
-			_ColorLabel1.Location = new System.Drawing.Point(120, 240);
+			_ColorLabel1.Location = new System.Drawing.Point(120, 260);
 			
 			//RGB value 2//
 			 _ColorLabel2 = new CormacTownLabel(12); //Smaller font
 			_ColorLabel2.Height = 30;
 			_ColorLabel2.Width = 120;
+			_ColorLabel2.ForeColor = System.Drawing.Color.Black;
 			_ColorLabel2.Text = "Green: " + _ColorValue2.ToString();
-			_ColorLabel2.Location = new System.Drawing.Point(120, 290);
+			_ColorLabel2.Location = new System.Drawing.Point(120, 310);
 			
 			
 		    //RGB value 3//
 			 _ColorLabel3 = new CormacTownLabel(12); //Smaller font
 			_ColorLabel3.Height = 30;
 			_ColorLabel3.Width = 100;
+			_ColorLabel3.ForeColor = System.Drawing.Color.Black;
 			_ColorLabel3.Text = "Blue: " + _ColorValue3.ToString();
-			_ColorLabel3.Location = new System.Drawing.Point(120, 340);
+			_ColorLabel3.Location = new System.Drawing.Point(120, 360);
 			
 
 			// ---------------- Triangle Button -------------------------- //
 			CormacTownButton triangleEntityButton = new CormacTownButton();
-			triangleEntityButton.Location = new System.Drawing.Point(15, 410);
+			triangleEntityButton.Location = new System.Drawing.Point(15, this.Height - 100);
 			triangleEntityButton.Text = "Triangle";	
 			triangleEntityButton.Name = "Triangle";
 			triangleEntityButton.Font = new System.Drawing.Font("Broadway", 10);
@@ -192,7 +207,7 @@ namespace MyGame
 			
 			// ---------------- Circle Button -------------------------- //
 			CormacTownButton circleEntityButton = new CormacTownButton();
-			circleEntityButton.Location = new System.Drawing.Point(120, 410);
+			circleEntityButton.Location = new System.Drawing.Point(120, this.Height - 100);
 			circleEntityButton.Text = "Circle";	
 			circleEntityButton.Name = "Circle";
 			circleEntityButton.Font = new System.Drawing.Font("Broadway", 10);
@@ -202,7 +217,7 @@ namespace MyGame
 			
 			// ---------------- Square Button -------------------------- //
 			CormacTownButton squareEntityButton = new CormacTownButton();
-			squareEntityButton.Location = new System.Drawing.Point(225, 410);
+			squareEntityButton.Location = new System.Drawing.Point(225, this.Height - 100);
 			squareEntityButton.Text = "Square";	
 			squareEntityButton.Name = "Square";
 			squareEntityButton.Font = new System.Drawing.Font("Broadway", 10);
@@ -210,6 +225,9 @@ namespace MyGame
 			squareEntityButton.Height = 40;
 			squareEntityButton.Click += new EventHandler (OnClickSHape);  //Event handler is the dleegate and been given particular implementaitotno of this method
 
+			
+			
+			
 			this.Controls.Add(titleLabel);
 			this.Controls.Add (_label1);
 			this.Controls.Add (_label2);
@@ -217,7 +235,6 @@ namespace MyGame
 			this.Controls.Add (_ColorLabel2);
 			this.Controls.Add (_ColorLabel3);
 			this.Controls.Add(startButton);
-			
 			
 			this.Controls.Add (trackBar1);
 			this.Controls.Add (trackBar2);
@@ -230,7 +247,7 @@ namespace MyGame
 			this.Controls.Add(circleEntityButton);
 			this.Controls.Add(triangleEntityButton);
 			this.Controls.Add(instructionLabel);
-	
+			this.Controls.Add(underlay);
 			//this.ShowDialog ();
 	
 		}

@@ -11,6 +11,8 @@ namespace MyGame
 		{
 		 	GetUserData userData = new GetUserData();
 			OpeningPage n = new OpeningPage(userData);			
+		
+		
 		}
 	}
 }

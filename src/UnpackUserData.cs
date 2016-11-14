@@ -19,7 +19,11 @@ namespace MyGame
 			_yPos = new List<int>();
 			FillX(_xPos);
 			FillY(_yPos);
-		
+			
+			//as well as randomly picking out values in the Unpack function
+			//we are also 'shuffling' the values for a random spawn for each entity
+			_yPos = RandomizeListValues(_yPos);
+			_xPos = RandomizeListValues(_xPos);		
 		}
 		
 		public void Unpack(GetUserData userData, EntityEnvironment e){
@@ -76,6 +80,22 @@ namespace MyGame
 			list.RemoveAt(index);
 			return val;
 		}
+				
+		private List<int> RandomizeListValues(List<int> list)
+		{
+		     List<int> randList = new List<int>();
+		
+		     Random r = new Random();
+		     int randomIndex = 0;
+		     while (list.Count > 0)
+		     {
+		          randomIndex = r.Next(0, list.Count); //Choose a random object in the list
+		          randList.Add(list[randomIndex]); //add it to the new, random list
+		          list.RemoveAt(randomIndex); //remove to avoid duplicates
+		     }
+		
+		     return randList; //return the new random list
+}
 					
 	}
 }

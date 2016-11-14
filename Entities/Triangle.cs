@@ -83,7 +83,7 @@ namespace MyGame
         }
 		
 		public void DrawMutationTag(){
-			SwinGame.DrawRectangle(Color.White, this.X - (this.Size/2) , this.Y, this.Size/2, this.Size/2);
+			SwinGame.FillRectangle(Color.White, this.X - (this.Size/2) + ((this.Size/2)/2) , this.Y, this.Size/2, this.Size/2);
 		}
 
 
@@ -97,7 +97,7 @@ namespace MyGame
             _pointCy = this.Y - this.Size;
         }
 		
-		public override void Move(float deltaTime)
+		public override void Move()
 		{
             if (this.AnimationStatus == Animation.none)
             {
@@ -110,21 +110,7 @@ namespace MyGame
             }
             
 		}
-		
-		
-		
-		public override void CheckCollisionScreen ()
-		{
-            Collision.LevelCollisionTriangle(this);
-		}
-		
-		public override GameEntity CreateOffspring (GameEntity g)
-		{			
-			Triangle newEntity = new Triangle(this.X, this.Y,  this.EntityGenes.CombineGeneLists(g.EntityGenes));
-			newEntity.X = this.X;
-			newEntity.Y = this.Y;
-			return (newEntity as GameEntity);
-		}
+
 	}
 }
 

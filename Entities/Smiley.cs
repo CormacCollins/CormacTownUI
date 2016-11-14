@@ -33,7 +33,7 @@ namespace MyGame
         }
 
 
-        public override void Move(float deltaTime)
+        public override void Move()
         {
             if (this.AnimationStatus == Animation.none)
             {
@@ -45,17 +45,5 @@ namespace MyGame
             }
         }
 
-        public override void CheckCollisionScreen()
-        {
-            Collision.LevelCollisionCircle(this);
-        }
-
-        public override GameEntity CreateOffspring(GameEntity g)
-        {
-            Smiley newEntity = new Smiley(this.X, this.Y, this.EntityGenes.CombineGeneLists(g.EntityGenes));
-            newEntity.X = this.X;
-            newEntity.Y = this.Y;
-            return (newEntity as GameEntity);
-        }
     }
 }

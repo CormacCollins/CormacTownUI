@@ -28,11 +28,11 @@ namespace MyGame
 			}
 		}
 		public void DrawMutationTag(){
-			SwinGame.DrawRectangle(Color.White, this.X - (this.Size/4) + this.Size, this.Y - (this.Size/4) + this.Size, this.Size/2, this.Size/2);
+			SwinGame.FillRectangle(Color.White, this.X - ((this.Size/2)/2), this.Y - ((this.Size/2)/2) , this.Size/2, this.Size/2);
 		}
 
 
-        public override void Move(float deltaTime)
+        public override void Move()
 		{
             if (this.AnimationStatus == Animation.none)
             {
@@ -43,16 +43,7 @@ namespace MyGame
             }
         }
 		
-		public override void CheckCollisionScreen ()
-		{
-            Collision.LevelCollisionCircle(this);		
-		}
-		
-		public override GameEntity CreateOffspring (GameEntity g)
-		{			
-			Circle newEntity = new Circle(this.X, this.Y,  this.EntityGenes.CombineGeneLists(g.EntityGenes));
-			return (newEntity as GameEntity);
-		}
+
 	}
 }
 

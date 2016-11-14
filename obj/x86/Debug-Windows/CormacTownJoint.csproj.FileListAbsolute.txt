@@ -30,3 +30,9 @@ C:\Users\corma\Desktop\CormacTownJoint\bin\Debug\Resources\images\circle.png
 C:\Users\corma\Desktop\CormacTownJoint\bin\Debug\Resources\images\logo.png
 C:\Users\corma\Desktop\CormacTownJoint\bin\Debug\Resources\images\square.png
 C:\Users\corma\Desktop\CormacTownJoint\bin\Debug\Resources\images\triangle.png
+C:\Users\corma\Desktop\CormacTownJoint\bin\Debug\OxyPlot.dll
+C:\Users\corma\Desktop\CormacTownJoint\bin\Debug\OxyPlot.WindowsForms.dll
+C:\Users\corma\Desktop\CormacTownJoint\bin\Debug\OxyPlot.pdb
+C:\Users\corma\Desktop\CormacTownJoint\bin\Debug\OxyPlot.xml
+C:\Users\corma\Desktop\CormacTownJoint\bin\Debug\OxyPlot.WindowsForms.pdb
+C:\Users\corma\Desktop\CormacTownJoint\bin\Debug\OxyPlot.WindowsForms.xml

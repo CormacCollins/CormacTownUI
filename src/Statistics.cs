@@ -10,56 +10,37 @@ namespace MyGame
     {
 		private StatsStruct _circles;
 		private StatsStruct _squares;
-		private StatsStruct _triangles;
-		
+		private StatsStruct _triangles;		
 		
 
         public Statistics() {
 			_circles = new StatsStruct();
 			_squares = new StatsStruct();
-			_triangles = new StatsStruct();
-			
+			_triangles = new StatsStruct();			
         }
 
-		public StatsStruct Circles
-		{
-			get
-			{
-				return _circles;
-			}
-			set
-			{
-				_circles = value;
-			}
+		public StatsStruct Circles{
+			get{return _circles;}
+			set{_circles = value;}
 		}
 
-		public StatsStruct Squares
-		{
-			get
-			{
-				return _squares;
-			}
-			set
-			{
-				_squares = value;
-			}
+		public StatsStruct Squares{
+			get{return _squares;}
+			set{_squares = value;}
 		}	
-		public StatsStruct Trangles
-		{
-			get
-			{
-				return _triangles;
-			}
-			set
-			{
-				_triangles = value;
-			}
-		}
-
-	
 		
+		public StatsStruct Trangles{
+			get{return _triangles;}
+			set{_triangles = value;}
+		}	
+		
+		//Pre game statistics to compare against final ones
 		public void AddPreGameStats (List<IGameObject> _ents)
 		{
+			//List for each type to obtain out of UI input -- //
+			//Counting percentage of each type //
+			//getting mutation number also//
+			
 			List<IGameObject> circles = new List<IGameObject> ();
 			float circlePerc = 0;
 			int circMutations = 0;
@@ -114,9 +95,12 @@ namespace MyGame
 		}
 		
 		
-		
+		//Post game stats 
 		public void CalculateStats (List<IGameObject> _ents)
 		{
+			//List for each type to obtain out of UI input -- //
+			//Counting percentage of each type //
+			//getting mutation number also//
 			List<IGameObject> circles = new List<IGameObject> ();
 			float circlePerc = 0;
 			int circMutations = 0;
@@ -172,14 +156,13 @@ namespace MyGame
 			
 		}
 		
+		//Gets data from the game EntityEnvironment and populates struct for displaying stats
 		private void PopulateStatsStructPost (List<IGameObject> seperatedShapes, float percentage, ref StatsStruct s, int mutations)
 		{
-			if (seperatedShapes.Count () <= 0)
-			{
+			if (seperatedShapes.Count () <= 0){
 				return;
 			}
-			
-			
+						
 			s.PopulationPercentagePost = percentage;
 
 
@@ -202,6 +185,7 @@ namespace MyGame
 			s.Mutations = mutations;
 		}
 		
+		//Populates struct with pre game info
 		private void PopulateStatsStructPre (List<IGameObject> seperatedShapes, float percentage, ref StatsStruct s, int mutations)
 		{
 			if (seperatedShapes.Count () <= 0)
@@ -229,10 +213,6 @@ namespace MyGame
 			s.AvgFitnessPre = avgFitness/seperatedShapes.Count();
 			
 			s.Mutations = mutations;
-
 		}
-
-
-
     }
 }

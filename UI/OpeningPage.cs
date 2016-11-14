@@ -1,9 +1,7 @@
 ﻿using System;
-
 using System.Windows.Forms;
 using System.Drawing;
 using System.Threading.Tasks;
-
 
 namespace MyGame
 {
@@ -25,16 +23,27 @@ namespace MyGame
 			this.Size = new Size (800, 600);
 			this.StartPosition = FormStartPosition.CenterScreen;
 			this.FormBorderStyle = FormBorderStyle.Fixed3D;
-			this.BackColor = Color.FromArgb(192, 192, 192);
+			this.BackColor = Color.White;
 			
 			//Size up picture box
 			pictureBox1.Size = new System.Drawing.Size(300, 200);
 			pictureBox1.Location = new Point(this.Width/2 - (logoWidth/2), 120);
 
 			
+			
+			
+			//Underlay//
+			CormacTownLabel underlay = new CormacTownLabel(24);
+			underlay.Width = this.Width;
+			underlay.Height = 100;
+			underlay.BackColor = System.Drawing.Color.Black;
+			underlay.Location = new System.Drawing.Point(0, 0);
+			
+			
 			// ------------------ Title label --------------------------------------- //
 			CormacTownLabel titleLabel = new CormacTownLabel(24);
 			titleLabel.Text = "Cormac Town";
+			titleLabel.BackColor = System.Drawing.Color.Black;
 			titleLabel.Location = new System.Drawing.Point(this.Width/2 - (titleLabel.Width/3) - 15, 20);
 		
 			
@@ -60,14 +69,16 @@ namespace MyGame
 			
 			this.Controls.Add(titleLabel);
 			this.Controls.Add(pictureBox1);	
+			this.Controls.Add(underlay);
 			//this.Controls.Add(instructionLabel);
+			
 			
 			this.ShowDialog ();
 	
 		}
 		
 		public void OnClick(object sender, EventArgs e)
-		{			
+		{	
 			//Create new page, hide the old one
 			//Set new page to the window position of the old page.
 			SelectionPage s = new SelectionPage(_userData);

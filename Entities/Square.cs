@@ -15,12 +15,13 @@ namespace MyGame
 		
 		public override void SetUpChildEnt ()
 		{
-			this.Size = 15;
+			this.Size = 10;
 		}
 
 		public override void Draw()
 		{
 			SwinGame.FillRectangle(this.Color, this.X - (this.Size / 2), this.Y - (this.Size / 2), this.Size, this.Size);
+			//If a mutation is in geneList then show the tag
 			if (this.IsMutation)
 			{
 				DrawMutationTag();
@@ -28,10 +29,10 @@ namespace MyGame
 		}
 		
 		public void DrawMutationTag(){
-			SwinGame.DrawRectangle(Color.White, this.X + (this.Size/4), this.Y + (this.Size/4), this.Size/2, this.Size/2);
+			SwinGame.FillRectangle(Color.White, this.X - ((this.Size/2)/2) , this.Y -  ((this.Size/2)/2) , this.Size/2, this.Size/2);
 		}
 
-        public override void Move(float deltaTime)
+        public override void Move()
 		{
             if (this.AnimationStatus == Animation.none)
             {
@@ -43,18 +44,6 @@ namespace MyGame
             }
            
         }
-		
-		public override void CheckCollisionScreen ()
-		{
-            Collision.LevelCollisionSquare(this);	
-		}
-		
-		public override GameEntity CreateOffspring (GameEntity g)
-		{	
-			Square newEntity = new Square (this.X, this.Y, this.EntityGenes.CombineGeneLists (g.EntityGenes));
-			return (newEntity as GameEntity);			
-		}
-
 
     }
 				

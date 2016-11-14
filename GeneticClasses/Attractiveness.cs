@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace MyGame
 {
+	/// <summary>
+	/// Detirmes Entity prefeence towards mating with eachother
+	/// </summary>
     public class Attractiveness : IAmGene
     {
 		private List<int> _geneValue;
@@ -19,47 +22,35 @@ namespace MyGame
 			_geneValue.Add(value);
 		}
 
-		public bool IsMutated
-		{
-			get{
-				return _isMutated;
-			}
-			set
-			{
-				_isMutated = value;
-			}
+		public bool IsMutated{
+			get{return _isMutated;}
+			set{_isMutated = value;}
 		}
 
-		public List<int> GeneValue
-		{
-			get
-			{
-				return _geneValue;
-			}
-			set
-			{
-				_geneValue = value;
-			}
+		public List<int> GeneValue{
+			get{return _geneValue;}
+			set{_geneValue = value;}
+		}		
+		
+		public string Name{
+			get{return _name;}
+			set{_name = value;}
 		}
 		
 		//Need to code so small variance occurs with change of mutation
 		public IAmGene CombineGenes(IAmGene g){
-			int gVal = CouldMutate (g.GeneValue [0], _geneValue [0]);
+			bool didMutate = false;
+			int gVal = CouldMutate (g.GeneValue [0], _geneValue [0], didMutate);
 			if (gVal > 100){
 				gVal = 100;
 			}
             //Apply CouldMutate Fuction to potentially mutate - else slightly change value from parents for child
-			Attractiveness atr = new Attractiveness(gVal, _isMutated);
+			Attractiveness atr = new Attractiveness(gVal, didMutate);
 			return (atr as IAmGene);
 		}
 
-		public string Name
-		{
-			get{return _name;}
-			set{_name = value;}
-		}
 
-        public int CouldMutate (int a, int b)
+		public int CouldMutate (int a, int b, bool didMutate)
 		{	
 			//Get difference between strengths - make sure it is pos
 			//ALso taking note of the biggest and smallest value
@@ -84,7 +75,6 @@ namespace MyGame
 				smallest = a;
 			}
 
-
 			Random newRand = new Random ();
 			//if random event (1/20) we apply a random multiplier to a portion of the 'Biggest' and add it to the bigger - This is a mutation
 			int randNumber = newRand.Next (10);
@@ -93,7 +83,7 @@ namespace MyGame
 			
 			if (randNumber == 5)
 			{
-				_isMutated = true;
+				didMutate = true;
 				Random newRand2 = new Random ();
 				int biggestPortion = biggest / 10;
 				return (newRand2.Next (5) * biggestPortion) + biggest;				
@@ -115,11 +105,6 @@ namespace MyGame
 				};
 				return smallest;
             }
-        }
-        
+        }        
     }
-	
-	
-
-
 }

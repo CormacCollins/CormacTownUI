@@ -19,26 +19,38 @@ namespace MyGame
 		private GenerateRandomMovement _randGenerator;
 		private bool _canGiveBirth;
 		private DateTime _time;
-        private int _life;
+        private float _life;
         private int _ID;
         private float _size;
         private Animation _animationStatus;
         private bool _isSelected;
 		private bool _isDead;
 		private bool _isMutation;
+		
+		//MapSize = 800/25 = 32 && 600/25 = 24		
+		private int _mapCellPosX;
+		private int _mapCellPosY;
 
+		
+		//WHen creating ents from reflection we need an empty Constructor
+		//In addtion we have the prepare entity function that can be called alongside reflection
         public GameEntity() {
             //Parameterless Constructor for Reflection
         }
 
 		public GameEntity(float x, float y, GeneList geneList) 
-		{
+		{			
 			PrepareEntity(x,  y, geneList);
 		}
 		
 		public void PrepareEntity (float x, float y, GeneList geneList)
 		{
-            //Want genes to be 'normal' or standard for the initial shape instantiation
+            
+			//Position X and how many places forward in intervals of 50
+			_mapCellPosX = (int)(x/25);
+			_mapCellPosY = (int)(y/25);
+			
+			//Set all traits normal for instantiation
             _life = 100;
 			_isDead = false;
 			_size = 10;
@@ -68,48 +80,41 @@ namespace MyGame
 		 //Explicit displosal of object - ready for garbage collector
         ~GameEntity()
         {
-           
+            //Is called when entities moved outside the map and are out of scope
+			//Garbage collector removes them to free up space
         }
 
-       
-
-        public void AddTimeCheck(DateTime t)
-        {
-            _time = t;
-        }
-        
-
-        public GenerateRandomMovement RandGenerator
-		{
+        public GenerateRandomMovement RandGenerator{
 			get{ return _randGenerator; }
 			set{ _randGenerator = value; }
 		}
 
-        public int ID {
-           get { return _ID; }
-            set { _ID = value;   }
-        }
-
-		public bool IsMutation
-		{
-			get
-			{
-				return _isMutation;
-			}
-			set
-			{
-				_isMutation = value;
-			}
+		public int MapCellPosY{
+			get{return _mapCellPosY;}
+			set{_mapCellPosY = value;}
 		}
 
-		public bool CanGiveBirth
-		{
+		public int MapCellPosX{
+			get{return _mapCellPosX;}
+			set{_mapCellPosX = value;}
+		}
+
+        public int ID {
+           get { return _ID;}
+            set { _ID = value;}
+        }
+
+		public bool IsMutation{
+			get{return _isMutation;}
+			set{_isMutation = value;}
+		}
+
+		public bool CanGiveBirth{
 			get{return _canGiveBirth;}
 			set{_canGiveBirth = value;}
 		}
 
-		public DateTime Time
-		{
+		public DateTime Time{
 			get{return _time;}
 			set{_time = value;}
 		}
@@ -143,74 +148,74 @@ namespace MyGame
 			set{_speedY = value;}
 		}
 
-        public int Life{
+        public float Life{
             get{return _life;}
             set{_life = value;}
         }
 
-        public float Size
-		{
-			get
-			{
-				return _size;
-			}
-
-			set
-			{
-                _size = value;
-            }
+        public float Size{
+			get{return _size;}
+			set{_size = value;}
         }
 
-		public bool IsDead
-		{
-			get
-			{
-				return _isDead;
-			}
-			set
-			{
-				_isDead = value;
-			}
+		public bool IsDead{
+			get{return _isDead;}
+			set{_isDead = value;}
 		}
 
-        public Animation AnimationStatus
-        {
-            get
-            {
-                return _animationStatus;
-            }
-
-            set
-            {
-                _animationStatus = value;
-            }
+        public Animation AnimationStatus{
+            get{return _animationStatus;}
+            set{_animationStatus = value;}
         }
 
-        public bool IsSelected
-        {
-            get
-            {
-                return _isSelected;
-            }
-
-            set
-            {
-                _isSelected = value;
-            }
+        public bool IsSelected{
+            get{return _isSelected;}
+            set{_isSelected = value;}
         }
-
+		
+		public void UpdateCellPosition (){
+			_mapCellPosX = (int)(_x/25);
+			_mapCellPosY = (int)(_y/25);
+		}
+		
         //All entities will need to check collection and state 'IsAt' location
-        public void UpdateEntity(IGameObject g, EntityEnvironment e)
-        {
-            GameEntity foreignEntity = (g as GameEntity);
+        public void UpdateEntity (EntityEnvironment e){
+			//Slowly decay Entity
+			DecreaseLife();
+			
+			//Move shape (normal random function) - will hand movement logic to mating  if animation occurs
+			Move ();
+			
+			//For Collision partition
+			UpdateCellPosition ();
+			
+			foreach (IGameObject g in e.GameEntities){		
+				if (!this.CanGiveBirth)	{
+					break;
+				}
+				
+				//Check for itself
+				if (_ID == (g as GameEntity).ID)
+				{
+					continue;
+				}
+				
+				//Check for in the same screen partition to go any further
+				if ((_mapCellPosX == (g as GameEntity).MapCellPosX) && (_mapCellPosY == (g as GameEntity).MapCellPosY))
+				{
+					//Collision Check (including mating logic)
+					CollisionChecks (g as GameEntity, e);
+				}				
+			}
             
-            g.Draw();
 			
-			//Collision Check (including mating logic)
-            CollisionChecks(foreignEntity, e);
+			//Check the mating timer 
+			CheckMatingTime ();
 			
-            //Move shape (normal random function) - will hand movement logic to mating  if animation occurs
-            Move(e.DeltaTime);
+            Draw();  
+			
+			//Use this checkto also check against ScreenBoundaries
+            CheckCollisionScreen();
 
         }
 
@@ -225,127 +230,136 @@ namespace MyGame
 		{
             // --- COLLISSION LOGIC -- //
             //CHeck if the object is not itself and the Collision Event timer will be true if requested elapsed time has passed
-
-            if (((_ID == foreignEntity.ID) == false) || (!foreignEntity.CanGiveBirth))
+			CheckMatingTime ();
+			
+            if ((foreignEntity.CanGiveBirth) && (_canGiveBirth))
             {
 
                 //Can now correctly check for the event of IGameObjects contacting eachother
                 if (IsAt(foreignEntity.X, foreignEntity.Y))
                 {
                     //Checking if can birth (only allowed so often) and also only if they are attracted to eachother
-                    if ((CheckIfCanMate(foreignEntity)) && (CheckIfCanMate(this)))
+                    if ((CheckIfCanMate(foreignEntity)) && (foreignEntity.CheckIfCanMate(this)))
                     {
                         //CanGiveBirth flag is set to depending on the timer following each birthing                        
-                        GameEntity newEnt = GiveBirth(foreignEntity);
+                         GameEntity newEnt = GiveBirth(foreignEntity);
 
                         //No births post birth for any of the entities            
                         newEnt.CanGiveBirth = false;
+						newEnt.TimeTillMate();
                         newEnt.Size = 1;
                         newEnt.AnimationStatus = Animation.born;
                         newEnt.SpeedX = 0;
                         newEnt.SpeedY = 0;
 
-                        e.NewEntitiesToBeAdded.Add(newEnt as IGameObject);
 
                         //Set up parent entities to not give birth again straight away
                         this.TimeTillMate();
-                        _speedX = (_speedX * 0.2F) * -1;
-                        _speedY = (_speedY * 0.2F) * -1;
+                        _speedX = (_speedX * 0.4F) * -1;
+                        _speedY = (_speedY * 0.4F) * -1;
                         _animationStatus = Animation.birthing;
 
                         foreignEntity.TimeTillMate();
-                        foreignEntity.SpeedX = (foreignEntity.SpeedX * 0.2F) * -1;
-                        foreignEntity.SpeedY = (foreignEntity.SpeedY * 0.2F) * -1;
+                        foreignEntity.SpeedX = (foreignEntity.SpeedX * 0.4F) * -1;
+                        foreignEntity.SpeedY = (foreignEntity.SpeedY * 0.4F) * -1;
                         foreignEntity.AnimationStatus = Animation.birthing;
 
 
                         foreignEntity.CanGiveBirth = false;
-                        _canGiveBirth = false;                  }
-                }
-
-                //Use this checkto also check against ScreenBoundaries
-                this.CheckCollisionScreen();
+                        _canGiveBirth = false;    
+						
+						
+                        e.NewEntitiesToBeAdded.Add(newEnt as IGameObject);
+					}
+                }                
             }
         }
 		
 		
+		//Depending on dominant Fitness, is which parent will create it's own instance
 		public GameEntity GiveBirth (GameEntity foreignEntity)
 		{
 			GameEntity newEnt;
-			if (foreignEntity.Life >= _life)
-			{
+			if (foreignEntity.EntityGenes.GetGenesList[2].GeneValue[0] > _entityGenes.GetGenesList[2].GeneValue[0]){
 				return newEnt = foreignEntity.CreateOffspring (this);
 			}
-			else
-			{
+			else{
 				 return newEnt =  this.CreateOffspring(foreignEntity);
 			}
 		}
 		
-		public bool CheckIfCanMate (GameEntity g)
-		{
-            if (g.CanGiveBirth)
-            {
+		public bool CheckIfCanMate (GameEntity g){
+            if (g.CanGiveBirth){
                 return IsAttractedToEntity(g);
             }
             return false; 
 		}
-
-        public void CheckMatingTime()
-        {
-            //Get Current Time and Compare against TimeCounter Created after each Birth
-            DateTime newTime = DateTime.Now;
-            var diff = newTime.Subtract(_time);
-            if (diff.Milliseconds > 0)
-            {
-                _canGiveBirth = true;
-            }
+		
+		// ----------- RETURN INSTANCE RELATING TO CHILD CLASS TYPE ------------------- //
+		public GameEntity CreateOffspring (GameEntity g){			
+			object newEntity = Activator.CreateInstance(g.GetType());
+			(newEntity as GameEntity).PrepareEntity(this.X, this.Y,  this.EntityGenes.CombineGeneLists(g.EntityGenes));
+			return (newEntity as GameEntity);
+		}
+			
+        public void CheckMatingTime (){
+			//Get Current Time and Compare against TimeCounter Created after each Birth
+			DateTime newTime = DateTime.Now;
+			var diff = _time.Second - newTime.Second;
+			int min1 = _time.Minute;
+			int min2 = newTime.Minute;			
+			
+			int isLater = newTime.CompareTo(_time);
+			//Seconds can tick over to mins
+			if (isLater > 0){
+				_canGiveBirth = true;
+			}			
         }
 		
-		public void TimeTillMate ()
-		{
-            TimeSpan time = new TimeSpan(100000000); //10 seconds
-            DateTime newTime = DateTime.Now;
-            var timeDiff = newTime + time;
+		public void TimeTillMate (){
+			TimeSpan time = new TimeSpan (100000000); //10 seconds
+			DateTime newTime = DateTime.Now;
+			int mins = newTime.Minute;		
+			var timeDiff = newTime + time;
+
 			_time = timeDiff;
+			
 		}
 				
-		public bool IsAt (float x, float y)
-		{
+		//Basic collision check (must be in same partition to reach this)
+		public bool IsAt (float x, float y){
 			if ((_x > x - 10) && (_x < x + 10))
 			{
 				if ((_y > y - 10) && (_y < y + 10))
 				{
 					return true;
 				}
-			}
-			
+			}			
 			return false;
 		}
 
-        public void DecreaseLife ()
-		{
+        public void DecreaseLife (){
 			if (_life <= 0){
 				return;
 			}
 			
-            IAmGene gene = this.EntityGenes.ReturnGene("PhysicalStrength");
-            List<int> geneVal = gene.GeneValue;
-            int g = geneVal[0];
-            if (g == 0)
-            {
-                g = 100;
-            }
-            else if (g >= 50)
-            {
-                g = 100 - g;
-            }
-            else if (g < 50)
-            {
-                g = 100 - g;
-            }
-            //Make g a low number / fraction then make it slightly higher (magic numbers for good death speed
-            g = (g / 15) * 2;
+			IAmGene gene = this.EntityGenes.ReturnGene ("PhysicalStrength");
+			List<int> geneVal = gene.GeneValue;
+			float g = geneVal [0];
+			if (g == 0)
+			{
+				g = 1;
+			}
+			if (g == 100)
+			{
+				g = 99;
+			}
+			if (g < 50)
+			{
+				g += g * 0.20F;
+			}
+			g = 100 - g;
+			g = g/1000;
 
             _life -= g;
         }
@@ -387,14 +401,15 @@ namespace MyGame
 			
 			if (_animationStatus == Animation.death)
 			{
-				DeathAnimation();
+				Death();
 			}
         }
 
+		//After birth they are small size, quickly grow them and once reach their animation is none and they become normal
         public void Grow()
         {
             //assuming small size start
-			_size += 0.05F;
+			_size += 0.1F;
             if (_size >= 10.0F)
             {
                 _animationStatus = Animation.none;
@@ -403,6 +418,7 @@ namespace MyGame
             }
         }
 
+		//Speed is slow and moving away from birthing area until timespan reached
         public void Birthing()
         {
             UpdateSpeed();
@@ -414,60 +430,35 @@ namespace MyGame
             }         
              
         }
+		
+		//quick shrink in size before dieing
+		public void Death ()
+		{
+			if (_size > 0){
+				_size -= 0.1F;
+			}
+			else{                
+				_isDead = true;
+            }    
+             
+        }
 
-
+		//Change movement on speed every loop
         public void UpdateSpeed()
         {
             this.X = (this.X) + ((this.SpeedX));// *(deltaTime/10));
             this.Y = (this.Y) + ((this.SpeedY));// * (deltaTime / 10));
         }
 		
-		public void DeathAnimation ()
+		//Use levelCollision code
+		public void CheckCollisionScreen ()
 		{
-			
-			//Update animation for 'death'
-			if (_time.Second > (DateTime.Now).Second)
-			{
-				_isDead = true;
-				_animationStatus = Animation.none;
-			}
-			else
-			{
-				if (_size > 10)
-				{
-					_size -= 0.05F;
-				}
-				DrawEyes ();
-				//Lower color to black so it 'dies'
-				EntityGenes.GetGenesList [0].GeneValue [0] = 0;
-				EntityGenes.GetGenesList [0].GeneValue [1] = 0;
-				EntityGenes.GetGenesList [0].GeneValue [2] = 0;
-			}
-		}
-		
-		public void DrawEyes ()
-		{
-			SwinGame.DrawLine(Color.White, X - 5, Y - 5, X - 2, Y);
-			SwinGame.DrawLine(Color.White, X - 5, Y, X - 2, Y - 5);
-			SwinGame.DrawLine(Color.White, X + 5, Y - 5, X + 2, Y );
-			SwinGame.DrawLine(Color.White, X + 5, Y, X + 2, Y - 5);
-		}
-		
-		public bool IsTooWhite()
-		{
-			foreach (int i in _entityGenes.GetGenesList[0].GeneValue)
-			{
-				if (i < 245){
-					return true;
-				}
-			}
-			return false;
+            Collision.LevelCollision(this);
 		}
 
+		//Must functions for different entity types
 		public abstract void Draw ();
-		public abstract void Move (float deltaTime);
-		public abstract void CheckCollisionScreen(); //Could make 'OuterWall' objects to check against, that way don't need ScreenCHeck
-		public abstract GameEntity CreateOffspring(GameEntity g);
+		public abstract void Move ();
 		public abstract void SetUpChildEnt ();
 
 
